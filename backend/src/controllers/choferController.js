@@ -1,11 +1,13 @@
 const choferService = require("../services/choferService");
 const MENSAJES = require("../constants/mensajes");
-const { success, error } = require("../utils/apiResponse");
+const { success, error, paginated } = require("../utils/apiResponse");
+const { getPagination } = require("../utils/pagination");
 
 async function listar(req, res, next) {
   try {
-    const choferes = await choferService.listar();
-    success(res, choferes);
+    const { page, limit, skip } = getPagination(req.query);
+    const result = await choferService.listar({}, { skip, take: limit });
+    paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);
   }
@@ -56,9 +58,9 @@ async function eliminar(req, res, next) {
 
 async function listarContactos(req, res, next) {
   try {
-    const contactos = await choferService.listarContactos(Number(req.params.id));
-    if (contactos.error) return error(res, MENSAJES.CHOFER[contactos.error.split(".")[1]], 404);
-    success(res, contactos);
+    const result = await choferService.listarContactos(Number(req.params.id));
+    if (result.error) return error(res, MENSAJES.CHOFER[result.error.split(".")[1]], 404);
+    success(res, result.data);
   } catch (err) {
     next(err);
   }
@@ -76,7 +78,8 @@ async function agregarContacto(req, res, next) {
 
 async function eliminarContacto(req, res, next) {
   try {
-    await choferService.eliminarContacto(Number(req.params.id));
+    const result = await choferService.eliminarContacto(Number(req.params.id));
+    if (result.error) return error(res, MENSAJES.CHOFER[result.error.split(".")[1]], 404);
     success(res, { message: MENSAJES.CHOFER.CONTACTO_ELIMINADO });
   } catch (err) {
     next(err);

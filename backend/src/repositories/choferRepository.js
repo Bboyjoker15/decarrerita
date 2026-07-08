@@ -1,9 +1,16 @@
 const prisma = require("../config/database");
 
-async function findAll() {
+async function findAll(filters = {}, pagination = {}) {
   return prisma.chofer.findMany({
+    where: filters,
+    skip: pagination.skip,
+    take: pagination.take,
     include: { user: true, banco: true, vehiculos: true, contactos: true },
   });
+}
+
+async function countAll(filters = {}) {
+  return prisma.chofer.count({ where: filters });
 }
 
 async function findById(id) {
@@ -33,6 +40,10 @@ async function findContactosByChoferId(choferId) {
   return prisma.contactoEmergencia.findMany({ where: { chofer_id: choferId } });
 }
 
+async function findContactoById(id) {
+  return prisma.contactoEmergencia.findUnique({ where: { id } });
+}
+
 async function createContacto(data) {
   return prisma.contactoEmergencia.create({ data });
 }
@@ -41,4 +52,4 @@ async function deleteContacto(id) {
   return prisma.contactoEmergencia.delete({ where: { id } });
 }
 
-module.exports = { findAll, findById, findByUserId, create, update, remove, findContactosByChoferId, createContacto, deleteContacto };
+module.exports = { findAll, countAll, findById, findByUserId, create, update, remove, findContactosByChoferId, findContactoById, createContacto, deleteContacto };

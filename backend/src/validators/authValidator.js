@@ -1,5 +1,4 @@
 const { body } = require("express-validator");
-const ROLES = require("../constants/roles");
 
 const register = [
   body("nombre").notEmpty().withMessage("El nombre es requerido"),
@@ -10,8 +9,8 @@ const register = [
   body("password").isLength({ min: 6 }).withMessage("La contraseña debe tener al menos 6 caracteres"),
   body("rol")
     .optional()
-    .isIn(Object.values(ROLES))
-    .withMessage(`Rol inválido. Valores: ${Object.values(ROLES).join(", ")}`),
+    .equals("CLIENTE")
+    .withMessage("El registro público solo permite el rol CLIENTE"),
 ];
 
 const login = [

@@ -1,7 +1,11 @@
 const prisma = require("../config/database");
 
-async function findAll(filters = {}) {
-  return prisma.user.findMany({ where: filters });
+async function findAll(filters = {}, pagination = {}) {
+  return prisma.user.findMany({ where: filters, skip: pagination.skip, take: pagination.take });
+}
+
+async function countAll(filters = {}) {
+  return prisma.user.count({ where: filters });
 }
 
 async function findById(id) {
@@ -28,4 +32,4 @@ async function remove(id) {
   return prisma.user.delete({ where: { id } });
 }
 
-module.exports = { findAll, findById, findByCorreo, findByCedula, create, update, remove };
+module.exports = { findAll, countAll, findById, findByCorreo, findByCedula, create, update, remove };

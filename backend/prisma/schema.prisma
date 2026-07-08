@@ -58,7 +58,7 @@ model Chofer {
   numero_cuenta String
   saldo         Float  @default(0.0)
 
-  user       User                @relation(fields: [user_id], references: [id])
+  user       User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
   banco      Banco               @relation(fields: [banco_id], references: [id])
   contactos  ContactoEmergencia[]
   vehiculos  Vehiculo[]
@@ -76,7 +76,7 @@ model ContactoEmergencia {
   telefono   String
   parentesco String
 
-  chofer Chofer @relation(fields: [chofer_id], references: [id])
+  chofer Chofer @relation(fields: [chofer_id], references: [id], onDelete: Cascade)
 
   @@map("contactos_emergencia")
 }
@@ -91,7 +91,7 @@ model Vehiculo {
   color     String
   activo    Boolean @default(true)
 
-  chofer     Chofer             @relation(fields: [chofer_id], references: [id])
+  chofer     Chofer              @relation(fields: [chofer_id], references: [id], onDelete: Cascade)
   revisiones RevisionVehiculo[]
   traslados  Traslado[]
 
@@ -104,7 +104,7 @@ model PruebaPsicologica {
   calificacion Float
   fecha_prueba DateTime @default(now())
 
-  chofer Chofer @relation(fields: [chofer_id], references: [id])
+  chofer Chofer @relation(fields: [chofer_id], references: [id], onDelete: Cascade)
 
   @@map("pruebas_psicologicas")
 }
@@ -115,7 +115,7 @@ model RevisionVehiculo {
   calificacion   Float
   fecha_revision DateTime @default(now())
 
-  vehiculo Vehiculo @relation(fields: [vehiculo_id], references: [id])
+  vehiculo Vehiculo @relation(fields: [vehiculo_id], references: [id], onDelete: Cascade)
 
   @@map("revisiones_vehiculo")
 }
@@ -125,7 +125,7 @@ model Cliente {
   user_id Int   @unique
   saldo   Float @default(0.0)
 
-  user     User       @relation(fields: [user_id], references: [id])
+  user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   recargas Recarga[]
   traslados Traslado[]
 

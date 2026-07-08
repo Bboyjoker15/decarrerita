@@ -1,7 +1,11 @@
 const vehiculoRepository = require("../repositories/vehiculoRepository");
 
-async function listar() {
-  return vehiculoRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    vehiculoRepository.findAll(filters, pagination),
+    vehiculoRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -22,6 +26,11 @@ async function actualizar(id, data) {
   return { data: actualizado };
 }
 
+async function listarPorChofer(choferId) {
+  const data = await vehiculoRepository.findByChoferId(choferId);
+  return { data };
+}
+
 async function eliminar(id) {
   const vehiculo = await vehiculoRepository.findById(id);
   if (!vehiculo) return { error: "VEHICULO.NO_ENCONTRADO" };
@@ -29,4 +38,4 @@ async function eliminar(id) {
   return { data: null };
 }
 
-module.exports = { listar, obtenerPorId, crear, actualizar, eliminar };
+module.exports = { listar, obtenerPorId, listarPorChofer, crear, actualizar, eliminar };

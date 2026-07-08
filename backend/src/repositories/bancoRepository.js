@@ -1,7 +1,11 @@
 const prisma = require("../config/database");
 
-async function findAll() {
-  return prisma.banco.findMany();
+async function findAll(filters = {}, pagination = {}) {
+  return prisma.banco.findMany({ where: filters, skip: pagination.skip, take: pagination.take });
+}
+
+async function countAll(filters = {}) {
+  return prisma.banco.count({ where: filters });
 }
 
 async function findById(id) {
@@ -20,4 +24,4 @@ async function remove(id) {
   return prisma.banco.delete({ where: { id } });
 }
 
-module.exports = { findAll, findById, create, update, remove };
+module.exports = { findAll, countAll, findById, create, update, remove };

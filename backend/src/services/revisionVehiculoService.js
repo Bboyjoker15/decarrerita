@@ -2,8 +2,12 @@ const revisionVehiculoRepository = require("../repositories/revisionVehiculoRepo
 
 const CALIFICACION_MINIMA = 65;
 
-async function listar() {
-  return revisionVehiculoRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    revisionVehiculoRepository.findAll(filters, pagination),
+    revisionVehiculoRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -13,12 +17,13 @@ async function obtenerPorId(id) {
 }
 
 async function listarPorVehiculo(vehiculoId) {
-  return revisionVehiculoRepository.findByVehiculoId(vehiculoId);
+  const data = await revisionVehiculoRepository.findByVehiculoId(vehiculoId);
+  return { data };
 }
 
 async function crear({ vehiculo_id, calificacion }) {
   if (calificacion < CALIFICACION_MINIMA) {
-    return { error: "PRUEBA.REVISION_NO_APROBADA" };
+    return { error: "REVISION.NO_APROBADA" };
   }
   const revision = await revisionVehiculoRepository.create({ vehiculo_id, calificacion });
   return { data: revision };
@@ -28,7 +33,7 @@ async function actualizar(id, data) {
   const revision = await revisionVehiculoRepository.findById(id);
   if (!revision) return { error: "REVISION.NO_ENCONTRADA" };
   if (data.calificacion && data.calificacion < CALIFICACION_MINIMA) {
-    return { error: "PRUEBA.REVISION_NO_APROBADA" };
+    return { error: "REVISION.NO_APROBADA" };
   }
   const actualizado = await revisionVehiculoRepository.update(id, data);
   return { data: actualizado };

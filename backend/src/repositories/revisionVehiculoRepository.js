@@ -1,10 +1,17 @@
 const prisma = require("../config/database");
 
-async function findAll() {
+async function findAll(filters = {}, pagination = {}) {
   return prisma.revisionVehiculo.findMany({
+    where: filters,
+    skip: pagination.skip,
+    take: pagination.take,
     include: { vehiculo: { include: { chofer: { include: { user: true } } } } },
     orderBy: { fecha_revision: "desc" },
   });
+}
+
+async function countAll(filters = {}) {
+  return prisma.revisionVehiculo.count({ where: filters });
 }
 
 async function findById(id) {
@@ -26,4 +33,4 @@ async function update(id, data) {
   return prisma.revisionVehiculo.update({ where: { id }, data });
 }
 
-module.exports = { findAll, findById, findByVehiculoId, create, update };
+module.exports = { findAll, countAll, findById, findByVehiculoId, create, update };

@@ -1,11 +1,13 @@
 const bancoService = require("../services/bancoService");
 const MENSAJES = require("../constants/mensajes");
-const { success, error } = require("../utils/apiResponse");
+const { success, error, paginated } = require("../utils/apiResponse");
+const { getPagination } = require("../utils/pagination");
 
 async function listar(req, res, next) {
   try {
-    const bancos = await bancoService.listar();
-    success(res, bancos);
+    const { page, limit, skip } = getPagination(req.query);
+    const result = await bancoService.listar({}, { skip, take: limit });
+    paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);
   }

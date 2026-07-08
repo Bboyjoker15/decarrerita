@@ -2,8 +2,12 @@ const pruebaPsicologicaRepository = require("../repositories/pruebaPsicologicaRe
 
 const CALIFICACION_MINIMA = 73;
 
-async function listar() {
-  return pruebaPsicologicaRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    pruebaPsicologicaRepository.findAll(filters, pagination),
+    pruebaPsicologicaRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -13,7 +17,8 @@ async function obtenerPorId(id) {
 }
 
 async function listarPorChofer(choferId) {
-  return pruebaPsicologicaRepository.findByChoferId(choferId);
+  const data = await pruebaPsicologicaRepository.findByChoferId(choferId);
+  return { data };
 }
 
 async function crear({ chofer_id, calificacion }) {

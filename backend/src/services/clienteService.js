@@ -1,7 +1,11 @@
 const clienteRepository = require("../repositories/clienteRepository");
 
-async function listar() {
-  return clienteRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    clienteRepository.findAll(filters, pagination),
+    clienteRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {

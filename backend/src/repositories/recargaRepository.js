@@ -1,7 +1,16 @@
 const prisma = require("../config/database");
 
-async function findAll() {
-  return prisma.recarga.findMany({ include: { cliente: { include: { user: true } }, banco: true } });
+async function findAll(filters = {}, pagination = {}) {
+  return prisma.recarga.findMany({
+    where: filters,
+    skip: pagination.skip,
+    take: pagination.take,
+    include: { cliente: { include: { user: true } }, banco: true },
+  });
+}
+
+async function countAll(filters = {}) {
+  return prisma.recarga.count({ where: filters });
 }
 
 async function findById(id) {
@@ -11,12 +20,21 @@ async function findById(id) {
   });
 }
 
-async function findByClienteId(clienteId) {
-  return prisma.recarga.findMany({ where: { cliente_id: clienteId }, include: { banco: true } });
+async function findByClienteId(clienteId, pagination = {}) {
+  return prisma.recarga.findMany({
+    where: { cliente_id: clienteId },
+    skip: pagination.skip,
+    take: pagination.take,
+    include: { banco: true },
+  });
+}
+
+async function countByClienteId(clienteId) {
+  return prisma.recarga.count({ where: { cliente_id: clienteId } });
 }
 
 async function create(data) {
   return prisma.recarga.create({ data });
 }
 
-module.exports = { findAll, findById, findByClienteId, create };
+module.exports = { findAll, countAll, findById, findByClienteId, countByClienteId, create };

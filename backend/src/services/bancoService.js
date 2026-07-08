@@ -1,7 +1,11 @@
 const bancoRepository = require("../repositories/bancoRepository");
 
-async function listar() {
-  return bancoRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    bancoRepository.findAll(filters, pagination),
+    bancoRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {

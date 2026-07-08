@@ -1,8 +1,12 @@
 const recargaRepository = require("../repositories/recargaRepository");
 const clienteRepository = require("../repositories/clienteRepository");
 
-async function listar() {
-  return recargaRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    recargaRepository.findAll(filters, pagination),
+    recargaRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -11,8 +15,12 @@ async function obtenerPorId(id) {
   return { data: recarga };
 }
 
-async function listarPorCliente(clienteId) {
-  return recargaRepository.findByClienteId(clienteId);
+async function listarPorCliente(clienteId, pagination = {}) {
+  const [data, total] = await Promise.all([
+    recargaRepository.findByClienteId(clienteId, pagination),
+    recargaRepository.countByClienteId(clienteId),
+  ]);
+  return { data, total };
 }
 
 async function crear({ cliente_id, banco_id, referencia, monto }) {

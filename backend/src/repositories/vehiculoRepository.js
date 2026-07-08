@@ -1,7 +1,16 @@
 const prisma = require("../config/database");
 
-async function findAll() {
-  return prisma.vehiculo.findMany({ include: { chofer: { include: { user: true } } } });
+async function findAll(filters = {}, pagination = {}) {
+  return prisma.vehiculo.findMany({
+    where: filters,
+    skip: pagination.skip,
+    take: pagination.take,
+    include: { chofer: { include: { user: true } } },
+  });
+}
+
+async function countAll(filters = {}) {
+  return prisma.vehiculo.count({ where: filters });
 }
 
 async function findById(id) {
@@ -27,4 +36,4 @@ async function remove(id) {
   return prisma.vehiculo.delete({ where: { id } });
 }
 
-module.exports = { findAll, findById, findByChoferId, create, update, remove };
+module.exports = { findAll, countAll, findById, findByChoferId, create, update, remove };

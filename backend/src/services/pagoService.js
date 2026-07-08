@@ -1,8 +1,12 @@
 const pagoRepository = require("../repositories/pagoRepository");
 const choferRepository = require("../repositories/choferRepository");
 
-async function listar() {
-  return pagoRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    pagoRepository.findAll(filters, pagination),
+    pagoRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -12,7 +16,8 @@ async function obtenerPorId(id) {
 }
 
 async function listarPorChofer(choferId) {
-  return pagoRepository.findByChoferId(choferId);
+  const data = await pagoRepository.findByChoferId(choferId);
+  return { data };
 }
 
 async function crear({ chofer_id, administrativo_id, monto, referencia }) {

@@ -6,8 +6,12 @@ const { randomChoferActivo } = require("../utils/randomSelector");
 const PORCENTAJE_EMPRESA = 0.3;
 const PORCENTAJE_CHOFER = 0.7;
 
-async function listar(filters = {}) {
-  return trasladoRepository.findAll(filters);
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    trasladoRepository.findAll(filters, pagination),
+    trasladoRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -16,12 +20,20 @@ async function obtenerPorId(id) {
   return { data: traslado };
 }
 
-async function listarPorCliente(clienteId) {
-  return trasladoRepository.findByClienteId(clienteId);
+async function listarPorCliente(clienteId, pagination = {}) {
+  const [data, total] = await Promise.all([
+    trasladoRepository.findByClienteId(clienteId, pagination),
+    trasladoRepository.countByClienteId(clienteId),
+  ]);
+  return { data, total };
 }
 
-async function listarPorChofer(choferId) {
-  return trasladoRepository.findByChoferId(choferId);
+async function listarPorChofer(choferId, pagination = {}) {
+  const [data, total] = await Promise.all([
+    trasladoRepository.findByChoferId(choferId, pagination),
+    trasladoRepository.countByChoferId(choferId),
+  ]);
+  return { data, total };
 }
 
 async function crear({ cliente_id, origen, destino, distancia_km, tarifa_km }) {

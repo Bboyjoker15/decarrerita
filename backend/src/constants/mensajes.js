@@ -29,6 +29,7 @@ const MENSAJES = {
     CREADO: "Chofer registrado exitosamente",
     ACTUALIZADO: "Chofer actualizado exitosamente",
     ELIMINADO: "Chofer eliminado exitosamente",
+    CONTACTO_NO_ENCONTRADO: "Contacto de emergencia no encontrado",
     CONTACTO_AGREGADO: "Contacto de emergencia agregado",
     CONTACTO_ELIMINADO: "Contacto de emergencia eliminado",
   },

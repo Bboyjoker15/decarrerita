@@ -2,8 +2,12 @@ const choferRepository = require("../repositories/choferRepository");
 const userRepository = require("../repositories/userRepository");
 const { hashPassword } = require("../utils/password");
 
-async function listar() {
-  return choferRepository.findAll();
+async function listar(filters = {}, pagination = {}) {
+  const [data, total] = await Promise.all([
+    choferRepository.findAll(filters, pagination),
+    choferRepository.countAll(filters),
+  ]);
+  return { data, total };
 }
 
 async function obtenerPorId(id) {
@@ -61,7 +65,8 @@ async function eliminar(id) {
 async function listarContactos(choferId) {
   const chofer = await choferRepository.findById(choferId);
   if (!chofer) return { error: "CHOFER.NO_ENCONTRADO" };
-  return choferRepository.findContactosByChoferId(choferId);
+  const data = await choferRepository.findContactosByChoferId(choferId);
+  return { data };
 }
 
 async function agregarContacto(choferId, data) {
@@ -72,6 +77,8 @@ async function agregarContacto(choferId, data) {
 }
 
 async function eliminarContacto(contactoId) {
+  const contacto = await choferRepository.findContactoById(contactoId);
+  if (!contacto) return { error: "CHOFER.CONTACTO_NO_ENCONTRADO" };
   await choferRepository.deleteContacto(contactoId);
   return { data: null };
 }

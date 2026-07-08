@@ -259,6 +259,164 @@ Detalles:
   - Corregido revisionVehiculoController: usaba MENSAJES.PRUEBA
     en vez de MENSAJES.REVISION
 
-================================================================
+----------------------------------------------------------------
+ENTRADA #10 - 2026-07-08
+---------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Correccion de bugs altos: ruta faltante, validaciones
+Archivos:  backend/src/routes/bancoRoutes.js,
+           backend/src/routes/clienteRoutes.js,
+           backend/src/routes/pruebaPsicologicaRoutes.js,
+           backend/src/routes/revisionVehiculoRoutes.js,
+           backend/src/validators/pruebaPsicologicaValidator.js (nuevo),
+           backend/src/validators/revisionVehiculoValidator.js (nuevo),
+           docs/BITACORA.txt
+Detalles:
+  - Agregada ruta GET /:id en bancoRoutes (faltaba obtenerPorId)
+  - Agregada validacion express-validator a PUT /clientes/:id
+    (importando clienteValidator + validate middleware)
+  - Creados validators para pruebaPsicologica y revisionVehiculo
+    con validacion de chofer_id/vehiculo_id y calificacion 0-100
+  - Integrados validators en routes de pruebas y revisiones
+  - Verificado que app.js carga sin errores
+
+=----------------------------------------------------------------
+ENTRADA #11 - 2026-07-08
+---------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Paginacion, filtros en usuarios, rutas para codigo muerto
+Archivos:  backend/src/utils/pagination.js (nuevo),
+           backend/src/controllers/userController.js,
+           backend/src/controllers/clienteController.js,
+           backend/src/controllers/choferController.js,
+           backend/src/controllers/vehiculoController.js,
+           backend/src/controllers/trasladoController.js,
+           backend/src/controllers/recargaController.js,
+           backend/src/controllers/bancoController.js,
+           backend/src/controllers/pagoController.js,
+           backend/src/controllers/pruebaPsicologicaController.js,
+           backend/src/controllers/revisionVehiculoController.js,
+           backend/src/services/userService.js,
+           backend/src/services/clienteService.js,
+           backend/src/services/choferService.js,
+           backend/src/services/vehiculoService.js,
+           backend/src/services/trasladoService.js,
+           backend/src/services/recargaService.js,
+           backend/src/services/bancoService.js,
+           backend/src/services/pagoService.js,
+           backend/src/services/pruebaPsicologicaService.js,
+           backend/src/services/revisionVehiculoService.js,
+           backend/src/repositories/ (todos los 10 archivos),
+           backend/src/routes/pagoRoutes.js,
+           backend/src/routes/pruebaPsicologicaRoutes.js,
+           backend/src/routes/revisionVehiculoRoutes.js,
+           docs/BITACORA.txt
+Detalles:
+  - Creado utils/pagination.js con getPagination() para extraer
+    page/limit/skip de req.query (default: page=1, limit=20, max 100)
+  - Agregado countAll() a todos los repositories para soportar
+    paginacion con total de registros
+  - Agregado pagination a findAll() en todos los repositories
+    (backward compatible: parametro opcional)
+  - Actualizados todos los services.listar() para devolver
+    { data, total } usando Promise.all con findAll + countAll
+  - Actualizados todos los controllers.listar() para usar
+    paginated() en vez de success()
+  - userController ahora filtra por rol, nombre, apellido,
+    correo, cedula desde req.query
+  - trasladoController filtra por estado, cliente_id, chofer_id
+  - Agregadas rutas nuevas: GET /pagos/chofer/:id,
+    GET /pruebas-psicologicas/chofer/:id,
+    GET /revisiones-vehiculo/vehiculo/:id
+  - Agregadas funciones controller listarPorChofer y
+    listarPorVehiculo para codigo que estaba muerto en services
+  - Verificado que app.js carga sin errores
+
+----------------------------------------------------------------
+ENTRADA #12 - 2026-07-08
+---------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Paginacion en endpoints "mis" (misTraslados, misRecargas)
+Archivos:  backend/src/repositories/trasladoRepository.js,
+           backend/src/repositories/recargaRepository.js,
+           backend/src/services/trasladoService.js,
+           backend/src/services/recargaService.js,
+           backend/src/controllers/trasladoController.js,
+           backend/src/controllers/recargaController.js,
+           docs/BITACORA.txt
+Detalles:
+  - Agregados countByClienteId, countByChoferId en repositorios
+  - findByClienteId y findByChoferId ahora aceptan pagination
+  - Services listarPorCliente/listarPorChofer devuelven {data,total}
+  - misTraslados, misTrasladosChofer, misRecargas ahora usan
+    paginated() con soporte para ?page y ?limit
+
+----------------------------------------------------------------
+ENTRADA #13 - 2026-07-08
+---------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Correccion bugs 3+mejoras: error key, validacion banco,
+           cascade delete, consistencia, dead code
+Archivos:  backend/src/services/revisionVehiculoService.js,
+           backend/src/services/choferService.js,
+           backend/src/services/pagoService.js,
+           backend/src/services/pruebaPsicologicaService.js,
+           backend/src/services/vehiculoService.js,
+           backend/src/controllers/choferController.js,
+           backend/src/controllers/pagoController.js,
+           backend/src/controllers/pruebaPsicologicaController.js,
+           backend/src/controllers/revisionVehiculoController.js,
+           backend/src/controllers/vehiculoController.js,
+           backend/src/repositories/choferRepository.js,
+           backend/src/routes/bancoRoutes.js,
+           backend/src/routes/vehiculoRoutes.js,
+           backend/src/validators/bancoValidator.js (nuevo),
+           backend/src/constants/mensajes.js,
+           backend/prisma/schema.prisma,
+           docs/BITACORA.txt
+Detalles:
+  BUG 1: revisionVehiculoService retornaba "PRUEBA.REVISION_NO_APROBADA"
+         pero controller buscaba en MENSAJES.REVISION -> corregido a
+         "REVISION.NO_APROBADA"
+  BUG 2: choferController.eliminarContacto no verificaba existencia
+         -> agregado findContactoById + return error si no existe
+         -> agregado mensaje CHOFER.CONTACTO_NO_ENCONTRADO
+  BUG 3: bancoRoutes sin validacion -> creado bancoValidator.js con
+         validacion de nombre y codigo + integrado en rutas
+  MEJORA 4: vehiculoRepository.findByChoferId (dead code) ahora expuesto
+            via GET /api/vehiculos/chofer/:id
+  MEJORA 5: 4 servicios con return types inconsistentes (raw array en vez
+            de { data }) corregidos: listarContactos, listarPorChofer
+            (pagos), listarPorChofer (pruebas), listarPorVehiculo
+            (revisiones)
+  MEJORA 6: Agregado onDelete: Cascade en Prisma schema para:
+            User->Cliente, User->Chofer, Chofer->Contactos,
+            Chofer->Vehiculos, Chofer->Pruebas, Vehiculo->Revisiones.
+            Business records (Traslados, Recargas, Pagos) mantienen
+            Restrict. Migracion pendiente (BD caida).
+  - Verificado: schema valido, Prisma Client generado, app.js carga OK
+
+----------------------------------------------------------------
+ENTRADA #14 - 2026-07-08
+---------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Correccion seguridad: escalamiento de roles y ownership
+Archivos:  backend/src/validators/authValidator.js,
+           backend/src/controllers/trasladoController.js,
+           docs/BITACORA.txt
+Detalles:
+  - authValidator.register: rol ahora solo acepta "CLIENTE"
+    (antes aceptaba cualquier valor del enum ADMIN, CHOFER, etc.)
+  - trasladoController.actualizarEstado: ahora verifica que el
+    CHOFER autenticado sea el asignado al traslado antes de
+    permitir cambiar el estado. Si no coincide, 403 NO_AUTORIZADO
+  - Backend listo para produccion: 0 bugs criticos conocidos
+
+==============================================================
                     FIN DE LA BITACORA
 ================================================================
