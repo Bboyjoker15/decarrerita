@@ -39,16 +39,19 @@ const MENSAJES = {
     ESTADO_ACTUALIZADO: "Estado del traslado actualizado",
   },
   RECARGA: {
+    NO_ENCONTRADA: "Recarga no encontrada",
     MONTO_INVALIDO: "El monto debe ser mayor a cero",
     CREADA: "Recarga registrada exitosamente",
     LISTA_OBTENIDA: "Recargas obtenidas exitosamente",
   },
   PAGO: {
+    NO_ENCONTRADO: "Pago no encontrado",
     MONTO_EXCEDE: "El monto del pago excede el saldo disponible del chofer",
     CREADO: "Pago registrado exitosamente",
     LISTA_OBTENIDA: "Pagos obtenidos exitosamente",
   },
   PRUEBA: {
+    NO_ENCONTRADA: "Prueba psicológica no encontrada",
     PSICOLOGICA_NO_APROBADA: "La calificación mínima para aprobar la prueba psicológica es 73",
     REVISION_NO_APROBADA: "La calificación mínima para aprobar la revisión del vehículo es 65",
     CREADA: "Prueba registrada exitosamente",
@@ -68,6 +71,13 @@ const MENSAJES = {
     LISTA_OBTENIDA: "Vehículos obtenidos exitosamente",
     ACTUALIZADO: "Vehículo actualizado exitosamente",
     ELIMINADO: "Vehículo eliminado exitosamente",
+  },
+  REVISION: {
+    NO_ENCONTRADA: "Revisión de vehículo no encontrada",
+    NO_APROBADA: "La calificación mínima para aprobar la revisión del vehículo es 65",
+    CREADA: "Revisión registrada exitosamente",
+    LISTA_OBTENIDA: "Revisiones obtenidas exitosamente",
+    ACTUALIZADA: "Revisión actualizada exitosamente",
   },
   GENERAL: {
     ERROR_INTERNO: "Error interno del servidor",

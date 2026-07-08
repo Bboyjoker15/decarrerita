@@ -141,6 +141,124 @@ Detalles:
     agregado POSTGRES_HOST_AUTH_METHOD=trust,
     cambiado a network_mode: host
 
+----------------------------------------------------------------
+ENTRADA #3 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Fase 1 - Config, Constants y Utils del backend
+Archivos:  backend/src/config/database.js, backend/src/config/environment.js,
+           backend/src/constants/roles.js, backend/src/constants/estados.js,
+           backend/src/constants/mensajes.js, backend/src/utils/password.js,
+           backend/src/utils/jwt.js, backend/src/utils/apiResponse.js,
+           backend/src/utils/randomSelector.js, backend/src/app.js,
+           backend/src/server.js
+Detalles:
+  - Creado config/database.js (singleton PrismaClient)
+  - Creado config/environment.js (validacion de vars de entorno)
+  - Creados constants/ (roles, estados, mensajes en espanol)
+  - Creados utils/ (password con bcrypt, JWT, apiResponse,
+    randomChoferActivo)
+  - Actualizados app.js y server.js con config centralizada
+
+----------------------------------------------------------------
+ENTRADA #4 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Fase 2 - Middlewares (authenticate, authorize, errorHandler,
+           validate)
+Archivos:  backend/src/middlewares/authenticate.js,
+           backend/src/middlewares/authorize.js,
+           backend/src/middlewares/errorHandler.js,
+           backend/src/middlewares/validate.js,
+           backend/src/app.js
+Detalles:
+  - authenticate: verifica JWT Bearer token, adjunta req.user
+  - authorize: factory que permite proteger rutas por rol
+  - errorHandler: captura errores Prisma, JWT y genericos
+  - validate: ejecuta validaciones de express-validator
+  - app.js actualizado con health DB real y errorHandler
+
+----------------------------------------------------------------
+ENTRADA #5 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Fase 3 - Repositories (capas de datos)
+Archivos:  backend/src/repositories/ (10 archivos)
+Detalles:
+  - Creados repositories para: user, cliente, chofer, vehiculo,
+    banco, recarga, traslado, pago, pruebaPsicologica,
+    revisionVehiculo
+  - Cada repository encapsula consultas Prisma
+  - ChoferRepository incluye CRUD de contactos de emergencia
+  - TrasladoRepository incluye filtros por cliente/chofer
+
+----------------------------------------------------------------
+ENTRADA #6 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Fase 4 - Services (logica de negocio)
+Archivos:  backend/src/services/ (11 archivos)
+Detalles:
+  - authService: register (crea user + cliente si aplica), login
+  - trasladoService: logica completa del negocio
+    (validar saldo -> calcular costo -> descontar saldo ->
+     asignar chofer aleatorio -> calcular 30%/70% ->
+     incrementar saldo chofer)
+  - recargaService: crear recarga incrementa saldo del cliente
+  - pagoService: pagar a chofer descuenta saldo pendiente
+  - choferService: creacion con validacion de minimo 2 contactos
+  - pruebaPsicologicaService: validacion >= 73
+  - revisionVehiculoService: validacion >= 65
+
+----------------------------------------------------------------
+ENTRADA #7 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Fase 5 - Validators y Controllers
+Archivos:  backend/src/validators/ (8 archivos),
+           backend/src/controllers/ (11 archivos)
+Detalles:
+  - Validators con express-validator para cada entidad
+  - Controllers que conectan servicios con HTTP
+  - Mapeo de errores de servicio a MENSAJES
+
+----------------------------------------------------------------
+ENTRADA #8 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Fase 6 - Rutas REST completas
+Archivos:  backend/src/routes/ (12 archivos),
+           backend/src/app.js
+Detalles:
+  - 12 archivos de rutas: index + auth + users + clientes +
+    choferes + vehiculos + bancos + recargas + traslados +
+    pagos + pruebasPsicologicas + revisionesVehiculo
+  - Proteccion por roles en cada endpoint
+  - Montadas todas las rutas bajo /api en app.js
+  - API verificada y funcionando (health + login JWT)
+
+----------------------------------------------------------------
+ENTRADA #9 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Correccion de bugs en mensajes y controllers
+Archivos:  backend/src/constants/mensajes.js,
+           backend/src/controllers/revisionVehiculoController.js,
+           docs/BITACORA.txt
+Detalles:
+  - Agregadas claves faltantes: RECARGA.NO_ENCONTRADA,
+    PAGO.NO_ENCONTRADO, PRUEBA.NO_ENCONTRADA,
+    REVISION namespace completo
+  - Corregido revisionVehiculoController: usaba MENSAJES.PRUEBA
+    en vez de MENSAJES.REVISION
+
 ================================================================
                     FIN DE LA BITACORA
 ================================================================
