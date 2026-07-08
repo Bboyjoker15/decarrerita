@@ -1,0 +1,8 @@
+const ESTADOS = {
+  PENDIENTE: "PENDIENTE",
+  COMPLETADO: "COMPLETADO",
+  CANCELADO: "CANCELADO",
+  PAGADO: "PAGADO",
+};
+
+module.exports = ESTADOS;
