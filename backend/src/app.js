@@ -7,6 +7,7 @@ const prisma = require("./config/database");
 const MENSAJES = require("./constants/mensajes");
 const { error: errorResponse } = require("./utils/apiResponse");
 const errorHandler = require("./middlewares/errorHandler");
+const routes = require("./routes");
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.get("/api/health", async (req, res) => {
     res.status(503).json({ status: "error", database: "desconectada" });
   }
 });
+
+app.use("/api", routes);
 
 app.use((req, res, next) => {
   errorResponse(res, MENSAJES.GENERAL.RUTA_NO_ENCONTRADA, 404);
