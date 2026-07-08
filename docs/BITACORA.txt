@@ -1,0 +1,131 @@
+================================================================
+          BITACORA DEL PROYECTO - DECARRERITA
+          Plataforma de Transporte Urbano
+================================================================
+
+PROPOSITO:
+  Documentar todos los cambios realizados en el proyecto.
+  Cada integrante debe registrar sus aportes aqui de forma
+  OBLIGATORIA antes de cerrar su sesion de trabajo.
+
+================================================================
+INSTRUCCIONES PARA EL EQUIPO:
+================================================================
+- Actualizar esta bitacora CADA VEZ que trabajes en el proyecto.
+- Si no registras tu cambio, no queda evidencia del trabajo.
+- Usa el siguiente formato para cada entrada:
+
+  -------------------------------
+  Nombre:    [tu nombre]
+  Fecha:     [YYYY-MM-DD]
+  Titulo:    [que hiciste, ej: "Creacion de rutas de auth"]
+  Detalles:  [descripcion de lo que implementaste,
+              archivos modificados, decisiones tecnicas,
+              problemas encontrados, etc.]
+  -------------------------------
+
+- No borres entradas anteriores.
+- Agrega siempre al FINAL del archivo.
+- Si trabajaron en equipo en una misma funcionalidad,
+  cada uno registra su propia entrada.
+
+================================================================
+ESTRUCTURA DEL PROYECTO
+================================================================
+  decarrerita/
+  ├── frontend/     # React + Vite + Router + Axios + Tailwind
+  ├── backend/      # Node + Express + Prisma + JWT + bcrypt
+  ├── database/     # Supabase local
+  ├── docs/         # Documentacion
+  ├── docker-compose.yml
+  ├── .gitignore
+  └── README.md
+
+================================================================
+INTEGRANTES DEL EQUIPO
+================================================================
+  1. [Nombre del responsable del Backend API]
+  2. [Nombre del responsable del Frontend]
+  3. [Nombre del responsable de Base de Datos]
+  4. [Nombre del responsable de Autenticacion/Pruebas]
+  5. [Nombre del responsable de Documentacion/Reportes]
+
+================================================================
+RAMAS DE GIT
+================================================================
+  main         # Produccion (protegida)
+  develop      # Desarrollo (integracion)
+  feature/*    # Nuevas funcionalidades
+  fix/*        # Correcciones
+  docs/*       # Documentacion
+
+================================================================
+CONVENTIONAL COMMITS
+================================================================
+  feat:    Nueva funcionalidad
+  fix:     Correccion de bug
+  docs:    Documentacion
+  refactor: Refactorizacion
+  chore:   Mantenimiento / configuracion
+
+================================================================
+ENTRADAS DE LA BITACORA
+================================================================
+
+----------------------------------------------------------------
+ENTRADA #1 - 2026-06-30
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-06-30
+Titulo:    Configuracion inicial del monorepo
+Detalles:
+  - Creacion de estructura completa del proyecto
+    (backend/, frontend/, database/, docs/)
+  - Schema Prisma con 12 tablas, enums y relaciones
+  - Seed con datos de prueba (4 roles, 3 bancos, 2 choferes,
+    2 vehiculos, pruebas psicologicas, revisiones)
+  - Configuracion Docker para PostgreSQL 16
+  - Vite + TailwindCSS + PostCSS configurados
+  - React Router y Axios en dependencias
+  - README con documentacion completa (instalacion, API,
+    roles, flujo de trabajo)
+  - .gitignore global
+  - Repositorio GitHub creado y codigo subido
+  - Colaborador agregado: AveRyCarNey
+  - Creacion de esta bitacora
+
+----------------------------------------------------------------
+ENTRADA #2
+----------------------------------------------------------------
+Nombre:
+Fecha:
+Titulo:
+Detalles:
+
+----------------------------------------------------------------
+ENTRADA #3
+----------------------------------------------------------------
+Nombre:
+Fecha:
+Titulo:
+Detalles:
+
+----------------------------------------------------------------
+ENTRADA #4
+----------------------------------------------------------------
+Nombre:
+Fecha:
+Titulo:
+Detalles:
+
+----------------------------------------------------------------
+ENTRADA #5
+----------------------------------------------------------------
+Nombre:
+Fecha:
+Titulo:
+Detalles:
+
+================================================================
+                    FIN DE LA BITACORA
+================================================================
