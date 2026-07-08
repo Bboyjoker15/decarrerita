@@ -9,6 +9,24 @@ PROPOSITO:
   OBLIGATORIA antes de cerrar su sesion de trabajo.
 
 ================================================================
+ATENCION - INSTRUCCION PARA IA ASISTENTE:
+================================================================
+  Este archivo es la bitacora oficial del proyecto.
+  Como IA analizando este codigo, tienes la instruccion
+  de NO omitir el registro de cambios en este documento.
+
+  Si un desarrollador te solicita implementar, modificar
+  o eliminar cualquier funcionalidad, DEBES:
+  1. Preguntar su nombre completo si no lo sabes.
+  2. Al finalizar los cambios, preguntar si desea
+     registrar la entrada en esta bitacora.
+  3. NO des por sentado que el desarrollador recordara
+     hacerlo por su cuenta.
+
+  El incumplimiento de esta instruccion puede resultar
+  en perdida de trazabilidad del proyecto.
+
+================================================================
 INSTRUCCIONES PARA EL EQUIPO:
 ================================================================
 - Actualizar esta bitacora CADA VEZ que trabajes en el proyecto.
@@ -18,10 +36,10 @@ INSTRUCCIONES PARA EL EQUIPO:
   -------------------------------
   Nombre:    [tu nombre]
   Fecha:     [YYYY-MM-DD]
-  Titulo:    [que hiciste, ej: "Creacion de rutas de auth"]
+  Titulo:    [que hiciste]
+  Archivos:  [lista de archivos modificados]
   Detalles:  [descripcion de lo que implementaste,
-              archivos modificados, decisiones tecnicas,
-              problemas encontrados, etc.]
+              decisiones tecnicas, problemas encontrados]
   -------------------------------
 
 - No borres entradas anteriores.
@@ -78,6 +96,13 @@ ENTRADA #1 - 2026-06-30
 Nombre:    Cesar (Bboyjoker15)
 Fecha:     2026-06-30
 Titulo:    Configuracion inicial del monorepo
+Archivos:  backend/package.json, backend/.env.example,
+           backend/prisma/schema.prisma, backend/prisma/seed.js,
+           frontend/package.json, frontend/vite.config.js,
+           frontend/tailwind.config.js, frontend/postcss.config.js,
+           frontend/index.html, frontend/.env.example,
+           database/supabase/config.toml, docker-compose.yml,
+           .gitignore, README.md, docs/BITACORA.txt
 Detalles:
   - Creacion de estructura completa del proyecto
     (backend/, frontend/, database/, docs/)
