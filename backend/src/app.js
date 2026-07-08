@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const prisma = require("./config/database");
 const MENSAJES = require("./constants/mensajes");
 const { error: errorResponse } = require("./utils/apiResponse");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
@@ -18,17 +19,19 @@ app.get("/api", (req, res) => {
   res.json({ message: "Decarrerita API funcionando" });
 });
 
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+app.get("/api/health", async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: "ok", database: "conectada", timestamp: new Date().toISOString() });
+  } catch {
+    res.status(503).json({ status: "error", database: "desconectada" });
+  }
 });
 
 app.use((req, res, next) => {
   errorResponse(res, MENSAJES.GENERAL.RUTA_NO_ENCONTRADA, 404);
 });
 
-app.use((err, req, res, next) => {
-  console.error("Error:", err.message);
-  errorResponse(res, MENSAJES.GENERAL.ERROR_INTERNO, 500);
-});
+app.use(errorHandler);
 
 module.exports = app;
