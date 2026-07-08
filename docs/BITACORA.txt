@@ -117,7 +117,29 @@ Detalles:
   - .gitignore global
   - Repositorio GitHub creado y codigo subido
   - Colaborador agregado: AveRyCarNey
-  - Creacion de esta bitacora
+   - Creacion de esta bitacora
+
+----------------------------------------------------------------
+ENTRADA #2 - 2026-07-08
+----------------------------------------------------------------
+Nombre:    Cesar (Bboyjoker15)
+Fecha:     2026-07-08
+Titulo:    Setup de base de datos PostgreSQL + migracion + seed
+Archivos:  backend/.env, docker-compose.yml, docs/BITACORA.txt
+Detalles:
+  - Diagnostico de Docker: funcionando dentro de WSL (v29.1.3)
+  - PostgreSQL 16 Alpine en contenedor Docker
+  - Configurado network_mode: host para acceso desde Windows
+  - Agregado portproxy de Windows a WSL para pg
+  - Instaladas dependencias del backend (npm install)
+  - Generado Prisma Client v6.19.3
+  - Ejecutada migracion inicial: 12 tablas creadas
+  - Ejecutado seed: 5 usuarios, 1 cliente, 2 choferes,
+    3 bancos, 2 vehiculos, 4 contactos, 2 pruebas, 2 revisiones
+  - Verificados datos en BD (TODO OK)
+  - Docker-compose actualizado: eliminado version obsoleto,
+    agregado POSTGRES_HOST_AUTH_METHOD=trust,
+    cambiado a network_mode: host
 
 ================================================================
                     FIN DE LA BITACORA

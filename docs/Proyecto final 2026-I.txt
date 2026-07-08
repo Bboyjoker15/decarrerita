@@ -1,0 +1,88 @@
+.
+
+Universidad Nacional Experimental de Guayana
+Carrera Ingeniería en Informática
+Sistemas de Base de Datos I
+Prof. María Raquel Herrera E.
+
+Proyecto Final (15%)
+Decarrerita, es una empresa local que necesita un sistema en línea para sus
+operaciones. Esta empresa está dedicada al transporte de pasajeros dentro de la
+ciudad, haciendo uso de flota liviana.
+Para ello cuenta con choferes y vehículos a lo largo de la ciudad. Los vehículos no son
+propios de Decarrerita sino de los choferes. Para poder ingresar a la plantilla de
+choferes es necesario que el chofer postulante realice una evaluación psicológica y
+el vehículo sea sometido a una revisión. La nota mínima aprobatoria para la prueba
+psicológica es de 73 y la máxima 100. Asi mismo la calificación mínima para que el
+vehículo sea considerado apto es de 65 con base a 100. Se deben guardar estos
+datos, así como la fecha de la obtención. Los vehículos son sometidos a dichas
+pruebas una vez al año.
+Los choferes de Decarrerita deben estar registrados en el sistema, con sus datos
+personales, entidad bancaria a donde se le realizaran los pagos, asi como el número
+de cuenta. Además, debe incluir al menos dos contactos en caso de emergencias. Los
+choferes pueden tener varios vehículos registrados para traslados
+Los clientes son personas naturales que solicitan traslados desde un punto “A” a un
+punto “B” de la ciudad
+Nota: El algoritmo o la lógica para el cálculo del costo de cada traslado (ya sea por
+distancia, zonas, tarifa fija, etc.) quedará a total discreción del equipo y deberá ser
+explícitamente detallado en el planteamiento del problema.
+Para que un cliente pueda solicitar el servicio primeramente debe estar registrado
+en el sistema con sus datos personales. El cliente debe transferir dinero a su saldo
+de usuario. De este saldo se irá descontando el costo de cada traslado. Se debe
+registrar la fecha, nro de referencia y banco desde que se hizo la recarga de saldo
+La empresa se queda con un 30% del precio de cada traslado, siendo el saldo restante
+para el chofer. El cliente debe tener la opción de ver su historial de recargas de
+saldo.
+Al solicitar un traslado por parte del cliente, el sistema asignará aleatoriamente un
+chofer para dicho traslado, incrementando el saldo a favor del chofer y
+decrementando el saldo del cliente. Los datos de este traslado deben quedar
+registrados en la base de datos. El cliente será capaz de ver los datos del chofer y
+del vehículo que se usará para su traslado.
+Los choferes deberán crearse una cuenta y cargar sus datos personales. El empleado
+administrativo es el encargado de otorgar la calificación correspondiente a la
+prueba, la fecha en que realizó la prueba, la entidad bancaria asi como el número de
+cuenta
+Dentro del sistema, existen cinco tipos de usuarios:
+
+- Usuario administrador
+- Usuario chofer
+- Usuario cliente
+- Usuario personal administrativo
+- Usuario chofer
+Estos usuarios pueden revisar los traslados realizados dado un período de tiempo,
+listado de los traslados cancelados por la empresa, listado de traslados pendientes
+por cancelar, ver sus datos personales. Además, este usuario debe crearse una
+cuenta para poder ingresar al sistema. Ahí cargará sus datos básicos personales
+- Usuario cliente
+Al igual que los choferes, los clientes deben crearse una cuenta. Podrán tener acceso
+a sus datos personales, visualización de los traslados realizados, recarga de saldo,
+solicitud de traslados, consulta de saldo, historial de recargas
+- Usuario personal administrativo
+Este tipo de usuario es el que tiene la permisología para cancelarle a los choferes
+los traslados, para ello se debe indicar la fecha del pago, la referencia y el monto
+pagado. Además, estos usuarios son los que ingresan la puntuación a las pruebas tanto
+de los choferes como de los vehículos, así como los datos de cualquier otra tabla
+base que el sistema requiera, como por ejemplo bancos.
+El personal administrativo también puede ver lo recaudado por la empresa por
+concepto de ganancias dado un periodo de tiempo, y lo cancelado a un chofer en
+especifico dado un periodo de tiempo
+
+Se debe entregar un informe que contenga:
+a.- Planteamiento del problema (se debe especificar aquellos aspectos que incluyeron
+en el sistema que no están presentes en este planteamiento, y que son un agregado
+del grupo para el proyecto).
+b.- Carta estructurada del sistema
+c.- Indicar las herramientas de desarrollo usadas (DBMS, lenguaje, frameworks etc)
+d.- Modelo E-R
+e.- Modelo Relacional en el DBMS de su preferencia
+f.- Diccionario de datos (por cada tabla se debe mostrar nombre, la descripción,
+clave primaria, foráneas, descripción de cada campo y su tipo de datos)
+g.- Pantallas de los formularios y descripción de cada uno de ellos
+h.- Pantallas de la salida de las consultas asi como su script
+Observaciones:
+- Asignación a ser elaborado en equipos de 5 personas máximo
+- Se penalizará anulando aquellas asignaciones que sean copias de otras.
+- Se tomará en cuenta la presentación y diseño de la interfaz
+- Usar el DBMS de su preferencia, asi como las herramientas de desarrollo
+
+
