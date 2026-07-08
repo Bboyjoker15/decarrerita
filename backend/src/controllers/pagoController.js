@@ -1,0 +1,44 @@
+const pagoService = require("../services/pagoService");
+const MENSAJES = require("../constants/mensajes");
+const { success, error } = require("../utils/apiResponse");
+
+async function listar(req, res, next) {
+  try {
+    const pagos = await pagoService.listar();
+    success(res, pagos);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function obtenerPorId(req, res, next) {
+  try {
+    const result = await pagoService.obtenerPorId(Number(req.params.id));
+    if (result.error) return error(res, MENSAJES.PAGO[result.error.split(".")[1]], 404);
+    success(res, result.data);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function crear(req, res, next) {
+  try {
+    const result = await pagoService.crear({
+      chofer_id: req.body.chofer_id,
+      administrativo_id: req.user.id,
+      monto: req.body.monto,
+      referencia: req.body.referencia,
+    });
+
+    if (result.error) {
+      const key = result.error.split(".")[1];
+      return error(res, MENSAJES.CHOFER[key] || MENSAJES.PAGO[key], 400);
+    }
+
+    success(res, result.data, 201);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { listar, obtenerPorId, crear };
