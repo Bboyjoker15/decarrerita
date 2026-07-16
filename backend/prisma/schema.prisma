@@ -21,6 +21,11 @@ enum EstadoTraslado {
   PAGADO
 }
 
+enum EstadoPago {
+  PENDIENTE
+  PAGADO
+}
+
 model User {
   id            Int      @id @default(autoincrement())
   nombre        String
@@ -73,6 +78,7 @@ model ContactoEmergencia {
   id         Int    @id @default(autoincrement())
   chofer_id  Int
   nombre     String
+  apellido   String
   telefono   String
   parentesco String
 
@@ -159,6 +165,7 @@ model Traslado {
   ganancia_empresa Float
   ganancia_chofer  Float
   estado          EstadoTraslado @default(PENDIENTE)
+  estado_pago     EstadoPago     @default(PENDIENTE)
   fecha           DateTime       @default(now())
 
   cliente  Cliente  @relation(fields: [cliente_id], references: [id])

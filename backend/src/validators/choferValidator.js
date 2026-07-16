@@ -11,6 +11,7 @@ const crear = [
   body("numero_cuenta").notEmpty().withMessage("El número de cuenta es requerido"),
   body("contactos").isArray({ min: 2 }).withMessage("Debe tener al menos 2 contactos de emergencia"),
   body("contactos.*.nombre").notEmpty().withMessage("El nombre del contacto es requerido"),
+  body("contactos.*.apellido").notEmpty().withMessage("El apellido del contacto es requerido"),
   body("contactos.*.telefono").notEmpty().withMessage("El teléfono del contacto es requerido"),
   body("contactos.*.parentesco").notEmpty().withMessage("El parentesco del contacto es requerido"),
 ];

@@ -12,6 +12,16 @@ async function register(req, res, next) {
   }
 }
 
+async function registerChofer(req, res, next) {
+  try {
+    const result = await authService.registerChofer(req.body);
+    if (result.error) return error(res, MENSAJES.AUTH[result.error.split(".")[1]], 400);
+    success(res, result.data, 201);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function login(req, res, next) {
   try {
     const result = await authService.login(req.body);
@@ -22,4 +32,4 @@ async function login(req, res, next) {
   }
 }
 
-module.exports = { register, login };
+module.exports = { register, registerChofer, login };

@@ -20,6 +20,12 @@ router.post(
   choferController.crear
 );
 
+router.get("/me", authorize(ROLES.CHOFER), choferController.miPerfil);
+router.put("/me", authorize(ROLES.CHOFER), choferValidator.actualizar, validate, choferController.actualizarMiPerfil);
+
+router.post("/me/contactos", authorize(ROLES.CHOFER), choferController.agregarMiContacto);
+router.delete("/me/contactos/:contactoId", authorize(ROLES.CHOFER), choferController.eliminarMiContacto);
+
 router.get("/:id", authorize(ROLES.ADMIN, ROLES.CHOFER), choferController.obtenerPorId);
 
 router.put(

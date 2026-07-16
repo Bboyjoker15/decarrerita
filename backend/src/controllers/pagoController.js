@@ -5,8 +5,13 @@ const { getPagination } = require("../utils/pagination");
 
 async function listar(req, res, next) {
   try {
+    const filters = {};
+    if (req.query.chofer_id) filters.chofer_id = parseInt(req.query.chofer_id);
+    const filtrosFechas = {};
+    if (req.query.fechaInicio) filtrosFechas.fechaInicio = req.query.fechaInicio;
+    if (req.query.fechaFin) filtrosFechas.fechaFin = req.query.fechaFin;
     const { page, limit, skip } = getPagination(req.query);
-    const result = await pagoService.listar({}, { skip, take: limit });
+    const result = await pagoService.listar(filters, { skip, take: limit }, filtrosFechas);
     paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);
@@ -25,8 +30,12 @@ async function obtenerPorId(req, res, next) {
 
 async function listarPorChofer(req, res, next) {
   try {
-    const result = await pagoService.listarPorChofer(Number(req.params.id));
-    success(res, result.data);
+    const filtrosFechas = {};
+    if (req.query.fechaInicio) filtrosFechas.fechaInicio = req.query.fechaInicio;
+    if (req.query.fechaFin) filtrosFechas.fechaFin = req.query.fechaFin;
+    const { page, limit, skip } = getPagination(req.query);
+    const result = await pagoService.listarPorChofer(Number(req.params.id), { skip, take: limit }, filtrosFechas);
+    paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);
   }

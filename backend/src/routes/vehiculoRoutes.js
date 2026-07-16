@@ -14,6 +14,7 @@ router.get("/", authorize(ROLES.ADMIN), vehiculoController.listar);
 router.get("/chofer/:id", authorize(ROLES.ADMIN, ROLES.CHOFER), vehiculoController.listarPorChofer);
 
 router.post("/", authorize(ROLES.ADMIN), vehiculoValidator.crear, validate, vehiculoController.crear);
+router.post("/me", authorize(ROLES.CHOFER), vehiculoValidator.crear, validate, vehiculoController.crearMiVehiculo);
 
 router.get("/:id", authorize(ROLES.ADMIN, ROLES.CHOFER), vehiculoController.obtenerPorId);
 

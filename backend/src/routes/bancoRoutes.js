@@ -9,12 +9,11 @@ const ROLES = require("../constants/roles");
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize(ROLES.ADMIN));
 
-router.get("/", bancoController.listar);
-router.get("/:id", bancoController.obtenerPorId);
-router.post("/", bancoValidator.crear, validate, bancoController.crear);
-router.put("/:id", bancoValidator.actualizar, validate, bancoController.actualizar);
-router.delete("/:id", bancoController.eliminar);
+router.get("/", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO, ROLES.CLIENTE, ROLES.CHOFER), bancoController.listar);
+router.get("/:id", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), bancoController.obtenerPorId);
+router.post("/", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), bancoValidator.crear, validate, bancoController.crear);
+router.put("/:id", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), bancoValidator.actualizar, validate, bancoController.actualizar);
+router.delete("/:id", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), bancoController.eliminar);
 
 module.exports = router;

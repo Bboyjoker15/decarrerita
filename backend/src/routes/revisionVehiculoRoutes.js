@@ -9,7 +9,7 @@ const ROLES = require("../constants/roles");
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize(ROLES.ADMIN));
+router.use(authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO));
 
 router.get("/", revisionController.listar);
 router.get("/vehiculo/:id", revisionController.listarPorVehiculo);

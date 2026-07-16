@@ -1,4 +1,5 @@
 const vehiculoService = require("../services/vehiculoService");
+const choferService = require("../services/choferService");
 const MENSAJES = require("../constants/mensajes");
 const { success, error, paginated } = require("../utils/apiResponse");
 const { getPagination } = require("../utils/pagination");
@@ -51,6 +52,17 @@ async function listarPorChofer(req, res, next) {
   }
 }
 
+async function crearMiVehiculo(req, res, next) {
+  try {
+    const perfil = await choferService.obtenerPorUserId(req.user.id);
+    if (perfil.error) return error(res, MENSAJES.CHOFER[perfil.error.split(".")[1]], 404);
+    const result = await vehiculoService.crear({ ...req.body, chofer_id: perfil.data.id });
+    success(res, result.data, 201);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function eliminar(req, res, next) {
   try {
     const result = await vehiculoService.eliminar(Number(req.params.id));
@@ -61,4 +73,4 @@ async function eliminar(req, res, next) {
   }
 }
 
-module.exports = { listar, obtenerPorId, listarPorChofer, crear, actualizar, eliminar };
+module.exports = { listar, obtenerPorId, listarPorChofer, crear, crearMiVehiculo, actualizar, eliminar };

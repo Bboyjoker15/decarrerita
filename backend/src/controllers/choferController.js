@@ -56,6 +56,54 @@ async function eliminar(req, res, next) {
   }
 }
 
+async function miPerfil(req, res, next) {
+  try {
+    const result = await choferService.obtenerPorUserId(req.user.id);
+    if (result.error) return error(res, MENSAJES.CHOFER[result.error.split(".")[1]], 404);
+    success(res, result.data);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function actualizarMiPerfil(req, res, next) {
+  try {
+    const perfil = await choferService.obtenerPorUserId(req.user.id);
+    if (perfil.error) return error(res, MENSAJES.CHOFER[perfil.error.split(".")[1]], 404);
+    const result = await choferService.actualizar(perfil.data.id, req.body);
+    if (result.error) return error(res, MENSAJES.CHOFER[result.error.split(".")[1]], 404);
+    success(res, result.data);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function agregarMiContacto(req, res, next) {
+  try {
+    const perfil = await choferService.obtenerPorUserId(req.user.id);
+    if (perfil.error) return error(res, MENSAJES.CHOFER[perfil.error.split(".")[1]], 404);
+    const result = await choferService.agregarContacto(perfil.data.id, req.body);
+    if (result.error) return error(res, MENSAJES.CHOFER[result.error.split(".")[1]], 404);
+    success(res, result.data, 201);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function eliminarMiContacto(req, res, next) {
+  try {
+    const perfil = await choferService.obtenerPorUserId(req.user.id);
+    if (perfil.error) return error(res, MENSAJES.CHOFER[perfil.error.split(".")[1]], 404);
+    const contacto = perfil.data.contactos?.find(c => c.id === Number(req.params.contactoId));
+    if (!contacto) return error(res, MENSAJES.CHOFER.CONTACTO_NO_ENCONTRADO, 404);
+    const result = await choferService.eliminarContacto(Number(req.params.contactoId));
+    if (result.error) return error(res, MENSAJES.CHOFER[result.error.split(".")[1]], 404);
+    success(res, { message: MENSAJES.CHOFER.CONTACTO_ELIMINADO });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function listarContactos(req, res, next) {
   try {
     const result = await choferService.listarContactos(Number(req.params.id));
@@ -86,4 +134,4 @@ async function eliminarContacto(req, res, next) {
   }
 }
 
-module.exports = { listar, obtenerPorId, crear, actualizar, eliminar, listarContactos, agregarContacto, eliminarContacto };
+module.exports = { listar, obtenerPorId, crear, actualizar, eliminar, miPerfil, actualizarMiPerfil, agregarMiContacto, eliminarMiContacto, listarContactos, agregarContacto, eliminarContacto };

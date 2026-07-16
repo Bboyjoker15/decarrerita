@@ -11,6 +11,7 @@ const trasladoRoutes = require("./trasladoRoutes");
 const pagoRoutes = require("./pagoRoutes");
 const pruebaPsicologicaRoutes = require("./pruebaPsicologicaRoutes");
 const revisionVehiculoRoutes = require("./revisionVehiculoRoutes");
+const reporteRoutes = require("./reporteRoutes");
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/traslados", trasladoRoutes);
 router.use("/pagos", pagoRoutes);
 router.use("/pruebas-psicologicas", pruebaPsicologicaRoutes);
 router.use("/revisiones-vehiculo", revisionVehiculoRoutes);
+router.use("/reportes", reporteRoutes);
 
 module.exports = router;

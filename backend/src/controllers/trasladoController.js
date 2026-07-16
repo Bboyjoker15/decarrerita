@@ -11,8 +11,11 @@ async function listar(req, res, next) {
     if (req.query.estado) filters.estado = req.query.estado;
     if (req.query.cliente_id) filters.cliente_id = parseInt(req.query.cliente_id);
     if (req.query.chofer_id) filters.chofer_id = parseInt(req.query.chofer_id);
+    const filtrosFechas = {};
+    if (req.query.fechaInicio) filtrosFechas.fechaInicio = req.query.fechaInicio;
+    if (req.query.fechaFin) filtrosFechas.fechaFin = req.query.fechaFin;
     const { page, limit, skip } = getPagination(req.query);
-    const result = await trasladoService.listar(filters, { skip, take: limit });
+    const result = await trasladoService.listar(filters, { skip, take: limit }, filtrosFechas);
     paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);
@@ -57,8 +60,11 @@ async function misTraslados(req, res, next) {
   try {
     const cliente = await clienteService.obtenerPorUserId(req.user.id);
     if (cliente.error) return error(res, MENSAJES.CLIENTE[cliente.error.split(".")[1]], 404);
+    const filtrosFechas = {};
+    if (req.query.fechaInicio) filtrosFechas.fechaInicio = req.query.fechaInicio;
+    if (req.query.fechaFin) filtrosFechas.fechaFin = req.query.fechaFin;
     const { page, limit, skip } = getPagination(req.query);
-    const result = await trasladoService.listarPorCliente(cliente.data.id, { skip, take: limit });
+    const result = await trasladoService.listarPorCliente(cliente.data.id, { skip, take: limit }, filtrosFechas);
     paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);
@@ -69,8 +75,11 @@ async function misTrasladosChofer(req, res, next) {
   try {
     const chofer = await choferService.obtenerPorUserId(req.user.id);
     if (chofer.error) return error(res, MENSAJES.CHOFER[chofer.error.split(".")[1]], 404);
+    const filtrosFechas = {};
+    if (req.query.fechaInicio) filtrosFechas.fechaInicio = req.query.fechaInicio;
+    if (req.query.fechaFin) filtrosFechas.fechaFin = req.query.fechaFin;
     const { page, limit, skip } = getPagination(req.query);
-    const result = await trasladoService.listarPorChofer(chofer.data.id, { skip, take: limit });
+    const result = await trasladoService.listarPorChofer(chofer.data.id, { skip, take: limit }, filtrosFechas);
     paginated(res, result.data, result.total, page, limit);
   } catch (err) {
     next(err);

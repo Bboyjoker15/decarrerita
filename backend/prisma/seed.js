@@ -104,13 +104,15 @@ async function main() {
     data: [
       {
         chofer_id: chofer1.id,
-        nombre: "Ana Ramirez",
+        nombre: "Ana",
+        apellido: "Ramirez",
         telefono: "04121111111",
         parentesco: "Esposa",
       },
       {
         chofer_id: chofer1.id,
-        nombre: "Luis Ramirez",
+        nombre: "Luis",
+        apellido: "Ramirez",
         telefono: "04122222222",
         parentesco: "Hermano",
       },
@@ -172,13 +174,15 @@ async function main() {
     data: [
       {
         chofer_id: chofer2.id,
-        nombre: "Sofia Lopez",
+        nombre: "Sofia",
+        apellido: "Lopez",
         telefono: "04123333333",
         parentesco: "Madre",
       },
       {
         chofer_id: chofer2.id,
-        nombre: "Pedro Lopez",
+        nombre: "Pedro",
+        apellido: "Lopez",
         telefono: "04124444444",
         parentesco: "Padre",
       },
