@@ -46,7 +46,7 @@ export default function PerfilConfigView() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500" />
+        <div className="w-8 h-8 border-2 border-[#E36852] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -54,30 +54,29 @@ export default function PerfilConfigView() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Configuración de Perfil</h1>
-        <p className="text-slate-400 text-sm mt-1">Actualiza tus datos personales</p>
+        <h1 className="text-2xl font-bold text-[#4A5568]">Configuración de Perfil</h1>
+        <p className="text-[#718096] text-sm mt-1">Actualiza tus datos personales</p>
       </div>
 
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-slate-700">
+      <div className="neu-card p-6 space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-[#E2E8F0]">
           <div>
-            <label className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Cédula</label>
-            <p className="text-white font-medium mt-1">{user?.cedula || '-'}</p>
+            <label className="text-xs text-[#718096] uppercase tracking-wider font-semibold">Cédula</label>
+            <p className="text-[#4A5568] font-medium mt-1">{user?.cedula || '-'}</p>
           </div>
           <div>
-            <label className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Rol</label>
-            <span className="inline-block mt-1 bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-semibold border border-emerald-500/20">
+            <label className="text-xs text-[#718096] uppercase tracking-wider font-semibold">Rol</label>
+            <span className="inline-block mt-1 bg-[#E36852]/10 text-[#E36852] text-xs px-2.5 py-1 rounded-full font-semibold border border-[#E36852]/20">
               {user?.rol}
             </span>
           </div>
         </div>
 
         {msg && (
-          <div className={`text-sm p-3 rounded-xl flex items-center gap-2 ${
-            msg.type === 'success'
-              ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-              : 'bg-red-500/10 border border-red-500/20 text-red-400'
-          }`}>
+          <div className={`text-sm p-3 rounded-xl flex items-center gap-2 ${msg.type === 'success'
+              ? 'bg-[#E36852]/10 text-[#E36852]'
+              : 'bg-[#DE4B43]/10 text-[#DE4B43]'
+            }`}>
             <span>{msg.text}</span>
           </div>
         )}
@@ -85,43 +84,43 @@ export default function PerfilConfigView() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Nombre</label>
               <input
                 type="text"
                 name="nombre"
                 value={form.nombre}
                 onChange={handleChange}
                 required
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Apellido</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Apellido</label>
               <input
                 type="text"
                 name="apellido"
                 value={form.apellido}
                 onChange={handleChange}
                 required
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Correo Electrónico</label>
             <input
               type="email"
               name="correo"
               value={form.correo}
               onChange={handleChange}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Teléfono</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Teléfono</label>
             <input
               type="text"
               name="telefono"
@@ -129,14 +128,14 @@ export default function PerfilConfigView() {
               onChange={handleChange}
               required
               placeholder="+58 XXX XXX XXXX"
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-semibold py-3 px-4 rounded-xl transition-colors text-sm flex items-center justify-center"
+            className="w-full bg-[#E36852] hover:bg-[#EA8559] disabled:bg-[#E36852]/60 text-white font-bold py-3 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm flex items-center justify-center"
           >
             {loading ? (
               <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">

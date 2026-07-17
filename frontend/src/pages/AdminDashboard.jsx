@@ -2,6 +2,19 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import AdminStaffDashboard from './AdminStaffDashboard';
 
+function MetricCard({ label, value, loading, accent }) {
+  return (
+    <div className="neu-card p-6">
+      <p className="text-[#718096] text-xs uppercase tracking-wider font-medium">{label}</p>
+      {loading ? (
+        <div className="h-8 w-20 bg-[#d1d9e6]/50 rounded-xl animate-pulse mt-2" />
+      ) : (
+        <p className="text-3xl font-bold text-[#4A5568] mt-1">{value}</p>
+      )}
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState({
     totalClientes: 0,
@@ -39,7 +52,6 @@ export default function AdminDashboard() {
 
         setMetrics({ totalClientes, choferesAptos, viajesHoy: viajesHoy.length, gananciasHistoricas });
       } catch {
-        // silent
       } finally {
         setLoading(false);
       }
@@ -52,9 +64,12 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto space-y-6">
         <button
           onClick={() => setShowStaff(false)}
-          className="text-emerald-400 hover:text-emerald-300 text-sm font-semibold flex items-center gap-1"
+          className="text-[#E36852] hover:text-[#EA8559] text-sm font-semibold flex items-center gap-1 transition-colors"
         >
-          ← Volver al Dashboard
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Volver al Dashboard
         </button>
         <AdminStaffDashboard />
       </div>
@@ -65,60 +80,36 @@ export default function AdminDashboard() {
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Panel de Administración</h1>
-          <p className="text-slate-400 text-sm mt-1">Métricas generales del sistema</p>
+          <h1 className="text-2xl font-bold text-[#4A5568]">Panel de Administración</h1>
+          <p className="text-[#718096] text-sm mt-1">Métricas generales del sistema</p>
         </div>
         <button
           onClick={() => setShowStaff(true)}
-          className="bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold py-2.5 px-5 rounded-xl transition-colors"
+          className="bg-[#FFF8F0] text-[#E36852] font-bold py-2.5 px-5 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm hover:text-[#EA8559]"
         >
           Gestión Operativa
         </button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-2xl p-6 shadow-lg">
-          <p className="text-emerald-100 text-xs uppercase tracking-wider font-medium">Total Clientes</p>
-          {loading ? (
-            <div className="h-8 w-16 bg-emerald-500/30 rounded animate-pulse mt-2" />
-          ) : (
-            <p className="text-3xl font-bold text-white mt-1">{metrics.totalClientes}</p>
-          )}
-        </div>
-        <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 shadow-lg">
-          <p className="text-blue-100 text-xs uppercase tracking-wider font-medium">Choferes Aptos</p>
-          {loading ? (
-            <div className="h-8 w-16 bg-blue-500/30 rounded animate-pulse mt-2" />
-          ) : (
-            <p className="text-3xl font-bold text-white mt-1">{metrics.choferesAptos}</p>
-          )}
-        </div>
-        <div className="bg-gradient-to-br from-amber-600 to-amber-800 rounded-2xl p-6 shadow-lg">
-          <p className="text-amber-100 text-xs uppercase tracking-wider font-medium">Viajes Hoy</p>
-          {loading ? (
-            <div className="h-8 w-16 bg-amber-500/30 rounded animate-pulse mt-2" />
-          ) : (
-            <p className="text-3xl font-bold text-white mt-1">{metrics.viajesHoy}</p>
-          )}
-        </div>
-        <div className="bg-gradient-to-br from-rose-600 to-rose-800 rounded-2xl p-6 shadow-lg">
-          <p className="text-rose-100 text-xs uppercase tracking-wider font-medium">Ganancias Históricas</p>
-          {loading ? (
-            <div className="h-8 w-20 bg-rose-500/30 rounded animate-pulse mt-2" />
-          ) : (
-            <p className="text-3xl font-bold text-white mt-1">${metrics.gananciasHistoricas.toFixed(2)}</p>
-          )}
-        </div>
+        <MetricCard label="Total Clientes" value={metrics.totalClientes} loading={loading} />
+        <MetricCard label="Choferes Aptos" value={metrics.choferesAptos} loading={loading} />
+        <MetricCard label="Viajes Hoy" value={metrics.viajesHoy} loading={loading} />
+        <MetricCard
+          label="Ganancias Históricas"
+          value={`$${metrics.gananciasHistoricas.toFixed(2)}`}
+          loading={loading}
+        />
       </div>
 
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-        <h2 className="text-lg font-bold text-white mb-4">Herramientas de Gestión</h2>
-        <p className="text-slate-400 text-sm mb-4">
+      <div className="neu-card p-6">
+        <h2 className="text-lg font-bold text-[#4A5568] mb-4">Herramientas de Gestión</h2>
+        <p className="text-[#718096] text-sm mb-4">
           Acceda al panel de gestión operativa para administrar evaluaciones, liquidaciones, reportes y bancos.
         </p>
         <button
           onClick={() => setShowStaff(true)}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl transition-colors text-sm"
+          className="bg-[#E36852] hover:bg-[#EA8559] text-white font-bold py-3 px-6 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm"
         >
           Ir a Gestión Operativa
         </button>

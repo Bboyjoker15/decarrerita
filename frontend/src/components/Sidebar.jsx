@@ -67,20 +67,23 @@ export default function Sidebar() {
   const links = roleLinks[user.rol] || [];
 
   return (
-    <aside className="w-64 bg-slate-800 border-r border-slate-700 flex flex-col h-screen sticky top-0">
-      <div className="p-5 border-b border-slate-700">
-        <h2 className="text-xl font-bold text-white tracking-tight">Decarrerita</h2>
-        <p className="text-xs text-slate-400 mt-1">Transporte Urbano</p>
+    <aside className="w-64 bg-white rounded-r-3xl shadow-[4px_0_12px_rgba(209,217,230,0.4)] flex flex-col h-screen sticky top-0">
+      <div className="p-5 flex items-center gap-3 border-b border-[#E2E8F0]">
+        <img src="/logo.png" alt="Cross-Roads" className="w-20 h-20 object-contain" />
+        <div>
+          <h2 className="text-lg font-black text-[#4A5568] tracking-tight">Cross-Roads</h2>
+          <p className="text-[10px] text-[#718096] font-medium">Transporte Urbano</p>
+        </div>
       </div>
 
-      <div className="p-4 border-b border-slate-700">
+      <div className="p-4 border-b border-[#E2E8F0]">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0">
+          <div className="w-9 h-9 bg-[#E36852] rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-neu-sm">
             {user.nombre?.[0]}{user.apellido?.[0]}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-white truncate">{user.correo}</p>
-            <span className="inline-block bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded-full font-semibold border border-emerald-500/20 mt-0.5">
+            <p className="text-sm font-medium text-[#4A5568] truncate">{user.correo}</p>
+            <span className="inline-block bg-[#E36852]/10 text-[#E36852] text-xs px-2 py-0.5 rounded-full font-semibold mt-0.5">
               {user.rol}
             </span>
           </div>
@@ -94,10 +97,9 @@ export default function Sidebar() {
             to={link.to}
             end
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/20'
-                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
+                ? 'bg-[#F0F3F8] text-[#E36852] shadow-neu-inset-sm'
+                : 'text-[#718096] hover:text-[#E36852] hover:shadow-neu-inset-sm hover:bg-[#F0F3F8]'
               }`
             }
           >
@@ -107,10 +109,10 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="p-3 border-t border-slate-700">
+      <div className="p-3 border-t border-[#E2E8F0]">
         <button
           onClick={logout}
-          className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-[#718096] hover:text-[#DE4B43] hover:shadow-neu-inset-sm hover:bg-[#F0F3F8] transition-all duration-200"
         >
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

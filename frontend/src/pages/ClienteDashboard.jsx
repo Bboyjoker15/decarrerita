@@ -2,6 +2,14 @@ import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import ViajeModal from '../components/ViajeModal';
 
+function SaldoIcon() {
+  return (
+    <svg className="w-7 h-7 text-[#E36852]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
 export default function ClienteDashboard() {
   const [saldo, setSaldo] = useState(0);
   const [loadingSaldo, setLoadingSaldo] = useState(true);
@@ -34,7 +42,6 @@ export default function ClienteDashboard() {
       const res = await api.get('/clientes/mi-saldo');
       setSaldo(res.data.data.saldo);
     } catch {
-      // silent
     } finally {
       setLoadingSaldo(false);
     }
@@ -45,7 +52,6 @@ export default function ClienteDashboard() {
       const res = await api.get('/bancos');
       setBancos(res.data.data || []);
     } catch {
-      // silent
     }
   }, []);
 
@@ -56,7 +62,6 @@ export default function ClienteDashboard() {
       setRecargas(res.data.data);
       setRecargasTotalPages(res.data.totalPages);
     } catch {
-      // silent
     } finally {
       setRecargasLoading(false);
     }
@@ -69,7 +74,6 @@ export default function ClienteDashboard() {
       setTraslados(res.data.data);
       setTrasladosTotalPages(res.data.totalPages);
     } catch {
-      // silent
     } finally {
       setTrasladosLoading(false);
     }
@@ -149,57 +153,60 @@ export default function ClienteDashboard() {
     });
   };
 
+  const statusBadge = (estado) => {
+    const map = {
+      COMPLETADO: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
+      PENDIENTE: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
+      CANCELADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+    };
+    return map[estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20';
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Panel de Cliente</h1>
-        <p className="text-slate-400 text-sm mt-1">Gestiona tu saldo, recargas y viajes</p>
+        <h1 className="text-2xl font-bold text-[#4A5568]">Panel de Cliente</h1>
+        <p className="text-[#718096] text-sm mt-1">Gestiona tu saldo, recargas y viajes</p>
       </div>
 
-      {/* Saldo card */}
-      <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-2xl p-6 shadow-lg">
+      <div className="neu-card p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-emerald-100 text-sm font-medium uppercase tracking-wider">Saldo Disponible</p>
+            <p className="text-[#718096] text-sm font-medium uppercase tracking-wider">Saldo Disponible</p>
             {loadingSaldo ? (
-              <div className="h-8 w-24 bg-emerald-500/30 rounded animate-pulse mt-2" />
+              <div className="h-8 w-24 bg-[#d1d9e6]/50 rounded-xl animate-pulse mt-2" />
             ) : (
-              <p className="text-4xl font-bold text-white mt-1">${saldo.toFixed(2)}</p>
+              <p className="text-4xl font-bold text-[#4A5568] mt-1">${saldo.toFixed(2)}</p>
             )}
           </div>
-          <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center">
-            <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="w-14 h-14 bg-[#FFF8F0] rounded-2xl flex items-center justify-center shadow-neu-sm">
+            <SaldoIcon />
           </div>
         </div>
       </div>
 
-      {/* Two-column forms */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recarga form */}
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Reportar Recarga</h2>
+        <div className="neu-card p-6">
+          <h2 className="text-lg font-bold text-[#4A5568] mb-4">Reportar Recarga</h2>
 
           {recargaMsg && (
-            <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${
-              recargaMsg.type === 'success'
-                ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-                : 'bg-red-500/10 border border-red-500/20 text-red-400'
-            }`}>
+            <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${recargaMsg.type === 'success'
+                ? 'bg-[#E36852]/10 text-[#E36852]'
+                : 'bg-[#DE4B43]/10 text-[#DE4B43]'
+              }`}>
               <span>{recargaMsg.text}</span>
             </div>
           )}
 
           <form onSubmit={handleRecargaSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Banco</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Banco</label>
               <select
                 name="banco_id"
                 value={recargaForm.banco_id}
                 onChange={handleRecargaChange}
                 required
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               >
                 <option value="">Seleccionar banco</option>
                 {bancos.map((b) => (
@@ -209,7 +216,7 @@ export default function ClienteDashboard() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Número de Referencia</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Número de Referencia</label>
               <input
                 type="text"
                 name="referencia"
@@ -217,12 +224,12 @@ export default function ClienteDashboard() {
                 onChange={handleRecargaChange}
                 required
                 placeholder="REF-123456"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Monto ($)</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Monto ($)</label>
               <input
                 type="number"
                 name="monto"
@@ -232,26 +239,25 @@ export default function ClienteDashboard() {
                 min="0.01"
                 step="0.01"
                 placeholder="0.00"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
 
             <button
               type="submit"
               disabled={recargaLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-semibold py-3 px-4 rounded-xl transition-colors text-sm"
+              className="w-full bg-[#E36852] hover:bg-[#EA8559] disabled:bg-[#E36852]/60 text-white font-bold py-3 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm"
             >
               {recargaLoading ? 'Procesando...' : 'Reportar Recarga'}
             </button>
           </form>
         </div>
 
-        {/* Traslado form */}
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Solicitar Traslado</h2>
+        <div className="neu-card p-6">
+          <h2 className="text-lg font-bold text-[#4A5568] mb-4">Solicitar Traslado</h2>
 
           {trasladoError && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-xl mb-4 flex items-center gap-2">
+            <div className="bg-[#DE4B43]/10 text-[#DE4B43] text-sm p-3 rounded-xl mb-4 flex items-center gap-2">
               <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -261,7 +267,7 @@ export default function ClienteDashboard() {
 
           <form onSubmit={handleTrasladoSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Dirección de Origen (A)</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Dirección de Origen (A)</label>
               <input
                 type="text"
                 name="origen"
@@ -269,12 +275,12 @@ export default function ClienteDashboard() {
                 onChange={handleTrasladoChange}
                 required
                 placeholder="Av. Principal, Edif. 123"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Dirección de Destino (B)</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Dirección de Destino (B)</label>
               <input
                 type="text"
                 name="destino"
@@ -282,14 +288,14 @@ export default function ClienteDashboard() {
                 onChange={handleTrasladoChange}
                 required
                 placeholder="Calle 5, Edif. 456"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
 
             <button
               type="submit"
               disabled={trasladoLoading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl transition-colors text-sm"
+              className="w-full bg-[#F3A85B] hover:bg-[#EA8559] disabled:bg-[#F3A85B]/60 text-white font-bold py-3 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm"
             >
               {trasladoLoading ? 'Solicitando...' : 'Solicitar Viaje'}
             </button>
@@ -297,37 +303,36 @@ export default function ClienteDashboard() {
         </div>
       </div>
 
-      {/* Recargas table */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
-        <div className="p-5 border-b border-slate-700">
-          <h2 className="text-lg font-bold text-white">Historial de Recargas</h2>
+      <div className="neu-card overflow-hidden">
+        <div className="p-5 border-b border-[#E2E8F0]">
+          <h2 className="text-lg font-bold text-[#4A5568]">Historial de Recargas</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-wider">
+              <tr className="bg-[#F0F3F8] text-[#718096] text-xs uppercase tracking-wider">
                 <th className="text-left p-4 font-semibold">Fecha</th>
                 <th className="text-left p-4 font-semibold">Banco</th>
                 <th className="text-left p-4 font-semibold">Referencia</th>
                 <th className="text-right p-4 font-semibold">Monto</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className="divide-y divide-[#E2E8F0]">
               {recargasLoading ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-slate-500">Cargando...</td>
+                  <td colSpan={4} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : recargas.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-slate-500">No hay recargas registradas</td>
+                  <td colSpan={4} className="p-8 text-center text-[#718096]">No hay recargas registradas</td>
                 </tr>
               ) : (
                 recargas.map((r) => (
-                  <tr key={r.id} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="p-4 text-slate-300">{formatDate(r.fecha)}</td>
-                    <td className="p-4 text-white">{r.banco?.nombre || '-'}</td>
-                    <td className="p-4 text-slate-300 font-mono text-xs">{r.referencia}</td>
-                    <td className="p-4 text-emerald-400 font-semibold text-right">${r.monto?.toFixed(2)}</td>
+                  <tr key={r.id} className="hover:bg-[#F0F3F8] transition-colors">
+                    <td className="p-4 text-[#718096]">{formatDate(r.fecha)}</td>
+                    <td className="p-4 text-[#4A5568]">{r.banco?.nombre || '-'}</td>
+                    <td className="p-4 text-[#718096] font-mono text-xs">{r.referencia}</td>
+                    <td className="p-4 text-[#E36852] font-semibold text-right">${r.monto?.toFixed(2)}</td>
                   </tr>
                 ))
               )}
@@ -335,21 +340,21 @@ export default function ClienteDashboard() {
           </table>
         </div>
         {recargasTotalPages > 1 && (
-          <div className="flex justify-center gap-2 p-4 border-t border-slate-700">
+          <div className="flex justify-center gap-2 p-4 border-t border-[#E2E8F0]">
             <button
               disabled={recargasPage <= 1}
               onClick={() => { setRecargasPage((p) => p - 1); fetchRecargas(recargasPage - 1); }}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="px-3 py-1.5 text-sm text-slate-400">
+            <span className="px-3 py-1.5 text-sm text-[#718096]">
               {recargasPage} / {recargasTotalPages}
             </span>
             <button
               disabled={recargasPage >= recargasTotalPages}
               onClick={() => { setRecargasPage((p) => p + 1); fetchRecargas(recargasPage + 1); }}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Siguiente
             </button>
@@ -357,15 +362,14 @@ export default function ClienteDashboard() {
         )}
       </div>
 
-      {/* Traslados table */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
-        <div className="p-5 border-b border-slate-700">
-          <h2 className="text-lg font-bold text-white">Historial de Traslados</h2>
+      <div className="neu-card overflow-hidden">
+        <div className="p-5 border-b border-[#E2E8F0]">
+          <h2 className="text-lg font-bold text-[#4A5568]">Historial de Traslados</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-wider">
+              <tr className="bg-[#F0F3F8] text-[#718096] text-xs uppercase tracking-wider">
                 <th className="text-left p-4 font-semibold">Fecha</th>
                 <th className="text-left p-4 font-semibold">Origen</th>
                 <th className="text-left p-4 font-semibold">Destino</th>
@@ -374,32 +378,27 @@ export default function ClienteDashboard() {
                 <th className="text-center p-4 font-semibold">Estado</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className="divide-y divide-[#E2E8F0]">
               {trasladosLoading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-slate-500">Cargando...</td>
+                  <td colSpan={6} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : traslados.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-slate-500">No hay traslados registrados</td>
+                  <td colSpan={6} className="p-8 text-center text-[#718096]">No hay traslados registrados</td>
                 </tr>
               ) : (
                 traslados.map((t) => (
-                  <tr key={t.id} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="p-4 text-slate-300 whitespace-nowrap">{formatDate(t.fecha)}</td>
-                    <td className="p-4 text-white max-w-[160px] truncate">{t.origen}</td>
-                    <td className="p-4 text-white max-w-[160px] truncate">{t.destino}</td>
-                    <td className="p-4 text-slate-300">
+                  <tr key={t.id} className="hover:bg-[#F0F3F8] transition-colors">
+                    <td className="p-4 text-[#718096] whitespace-nowrap">{formatDate(t.fecha)}</td>
+                    <td className="p-4 text-[#4A5568] max-w-[160px] truncate">{t.origen}</td>
+                    <td className="p-4 text-[#4A5568] max-w-[160px] truncate">{t.destino}</td>
+                    <td className="p-4 text-[#718096]">
                       {t.chofer?.user ? `${t.chofer.user.nombre} ${t.chofer.user.apellido}` : '-'}
                     </td>
-                    <td className="p-4 text-emerald-400 font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
+                    <td className="p-4 text-[#E36852] font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
                     <td className="p-4 text-center">
-                      <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold ${
-                        t.estado === 'COMPLETADO' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                        t.estado === 'PENDIENTE' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
-                        t.estado === 'CANCELADO' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                        'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                      }`}>
+                      <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold border ${statusBadge(t.estado)}`}>
                         {t.estado}
                       </span>
                     </td>
@@ -410,21 +409,21 @@ export default function ClienteDashboard() {
           </table>
         </div>
         {trasladosTotalPages > 1 && (
-          <div className="flex justify-center gap-2 p-4 border-t border-slate-700">
+          <div className="flex justify-center gap-2 p-4 border-t border-[#E2E8F0]">
             <button
               disabled={trasladosPage <= 1}
               onClick={() => { setTrasladosPage((p) => p - 1); fetchTraslados(trasladosPage - 1); }}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="px-3 py-1.5 text-sm text-slate-400">
+            <span className="px-3 py-1.5 text-sm text-[#718096]">
               {trasladosPage} / {trasladosTotalPages}
             </span>
             <button
               disabled={trasladosPage >= trasladosTotalPages}
               onClick={() => { setTrasladosPage((p) => p + 1); fetchTraslados(trasladosPage + 1); }}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Siguiente
             </button>
@@ -432,7 +431,6 @@ export default function ClienteDashboard() {
         )}
       </div>
 
-      {/* Viaje modal */}
       {viajeAsignado && (
         <ViajeModal traslado={viajeAsignado} onClose={() => setViajeAsignado(null)} />
       )}

@@ -3,6 +3,22 @@ import api from '../services/api';
 
 const LIMIT = 15;
 
+function StatusInfoIcon() {
+  return (
+    <svg className="w-6 h-6 text-[#E36852]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function WalletIcon() {
+  return (
+    <svg className="w-6 h-6 text-[#F3A85B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+    </svg>
+  );
+}
+
 export default function ChoferDashboard() {
   const [chofer, setChofer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +53,6 @@ export default function ChoferDashboard() {
         numero_cuenta: res.data.data.numero_cuenta || '',
       });
     } catch {
-      // silent
     } finally {
       setLoading(false);
     }
@@ -48,7 +63,6 @@ export default function ChoferDashboard() {
       const res = await api.get('/bancos');
       setBancos(res.data.data || []);
     } catch {
-      // silent
     }
   }, []);
 
@@ -58,7 +72,6 @@ export default function ChoferDashboard() {
       const res = await api.get(`/vehiculos/chofer/${perfil.data.data.id}`);
       setVehiculos(res.data.data || []);
     } catch {
-      // silent
     }
   }, []);
 
@@ -133,7 +146,6 @@ export default function ChoferDashboard() {
       await api.delete(`/choferes/me/contactos/${id}`);
       fetchChofer();
     } catch {
-      // silent
     }
   };
 
@@ -171,7 +183,7 @@ export default function ChoferDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500" />
+        <div className="w-8 h-8 border-2 border-[#E36852] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -185,29 +197,41 @@ export default function ChoferDashboard() {
   const ultimaPrueba = chofer?.pruebas?.[chofer.pruebas.length - 1];
   const esApto = ultimaPrueba && ultimaPrueba.calificacion >= 73;
 
+  const statusBadge = (estado) => {
+    const map = {
+      COMPLETADO: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
+      PENDIENTE: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
+      PAGADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+    };
+    return map[estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20';
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Panel de Chofer</h1>
-        <p className="text-slate-400 text-sm mt-1">Gestiona tu perfil, vehículos y viajes</p>
+        <h1 className="text-2xl font-bold text-[#4A5568]">Panel de Chofer</h1>
+        <p className="text-[#718096] text-sm mt-1">Gestiona tu perfil, vehículos y viajes</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 shadow-lg">
-          <p className="text-blue-100 text-sm font-medium uppercase tracking-wider">Saldo Acumulado a Favor</p>
-          <p className="text-4xl font-bold text-white mt-1">${chofer?.saldo?.toFixed(2) || '0.00'}</p>
+        <div className="neu-card p-6">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[#718096] text-sm font-medium uppercase tracking-wider">Saldo Acumulado a Favor</p>
+            <WalletIcon />
+          </div>
+          <p className="text-4xl font-bold text-[#4A5568] mt-1">${chofer?.saldo?.toFixed(2) || '0.00'}</p>
         </div>
-        <div className={`rounded-2xl p-6 shadow-lg ${
-          esApto ? 'bg-gradient-to-br from-emerald-600 to-emerald-800' : 'bg-gradient-to-br from-amber-600 to-amber-800'
-        }`}>
-          <p className="text-white/80 text-sm font-medium uppercase tracking-wider">Estatus de Aptitud</p>
-          <div className="flex items-center gap-3 mt-2">
-            <span className={`text-2xl font-bold ${esApto ? 'text-white' : 'text-white'}`}>
+        <div className="neu-card p-6">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[#718096] text-sm font-medium uppercase tracking-wider">Estatus de Aptitud</p>
+            <StatusInfoIcon />
+          </div>
+          <div className="flex items-center gap-3 mt-1">
+            <span className={`text-2xl font-bold ${esApto ? 'text-[#E36852]' : 'text-[#F3A85B]'}`}>
               {esApto ? 'APTO' : 'NO APTO'}
             </span>
-            <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
-              esApto ? 'bg-white/20 text-white' : 'bg-white/20 text-white'
-            }`}>
+            <span className={`text-xs px-2.5 py-1 rounded-full font-semibold border ${esApto ? 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20' : 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20'
+              }`}>
               {ultimaPrueba ? `Nota: ${ultimaPrueba.calificacion}` : 'Sin evaluación'}
             </span>
           </div>
@@ -215,26 +239,23 @@ export default function ChoferDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Registro de Cuenta Bancaria</h2>
+        <div className="neu-card p-6">
+          <h2 className="text-lg font-bold text-[#4A5568] mb-4">Registro de Cuenta Bancaria</h2>
           {bancoMsg && (
-            <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${
-              bancoMsg.type === 'success'
-                ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-                : 'bg-red-500/10 border border-red-500/20 text-red-400'
-            }`}>
+            <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${bancoMsg.type === 'success' ? 'bg-[#E36852]/10 text-[#E36852]' : 'bg-[#DE4B43]/10 text-[#DE4B43]'
+              }`}>
               <span>{bancoMsg.text}</span>
             </div>
           )}
           <form onSubmit={handleBancoUpdate} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Banco</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Banco</label>
               <select
                 name="banco_id"
                 value={bancoForm.banco_id}
                 onChange={(e) => setBancoForm((p) => ({ ...p, banco_id: e.target.value }))}
                 required
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               >
                 <option value="">Seleccionar banco</option>
                 {bancos.map((b) => (
@@ -243,98 +264,95 @@ export default function ChoferDashboard() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Número de Cuenta</label>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Número de Cuenta</label>
               <input
                 type="text"
                 value={bancoForm.numero_cuenta}
                 onChange={(e) => setBancoForm((p) => ({ ...p, numero_cuenta: e.target.value }))}
                 required
                 placeholder="0000-0000-00-0000000000"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
               />
             </div>
             <button
               type="submit"
               disabled={bancoLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-semibold py-3 px-4 rounded-xl transition-colors text-sm"
+              className="w-full bg-[#E36852] hover:bg-[#EA8559] disabled:bg-[#E36852]/60 text-white font-bold py-3 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm"
             >
               {bancoLoading ? 'Guardando...' : 'Actualizar Cuenta'}
             </button>
           </form>
         </div>
 
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-          <h2 className="text-lg font-bold text-white mb-4">
+        <div className="neu-card p-6">
+          <h2 className="text-lg font-bold text-[#4A5568] mb-4">
             Contactos de Emergencia
-            <span className="ml-2 text-xs text-slate-400 font-normal">({contactosCount}/2 mín)</span>
+            <span className="ml-2 text-xs text-[#718096] font-normal">({contactosCount}/2 mín)</span>
           </h2>
           {contactoMsg && (
-            <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${
-              contactoMsg.type === 'success'
-                ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-                : 'bg-red-500/10 border border-red-500/20 text-red-400'
-            }`}>
+            <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${contactoMsg.type === 'success' ? 'bg-[#E36852]/10 text-[#E36852]' : 'bg-[#DE4B43]/10 text-[#DE4B43]'
+              }`}>
               <span>{contactoMsg.text}</span>
             </div>
           )}
           <div className="space-y-2 mb-4">
             {chofer?.contactos?.map((c) => (
-              <div key={c.id} className="flex items-center justify-between bg-slate-900/50 rounded-xl p-3 border border-slate-700">
+              <div key={c.id} className="neu-card-sm p-3 flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-white font-medium">{c.nombre} {c.apellido || ''}</p>
-                  <p className="text-xs text-slate-400">{c.telefono} · {c.parentesco}</p>
+                  <p className="text-sm text-[#4A5568] font-medium">{c.nombre} {c.apellido || ''}</p>
+                  <p className="text-xs text-[#718096]">{c.telefono} · {c.parentesco}</p>
                 </div>
                 <button
                   onClick={() => handleDeleteContacto(c.id)}
-                  className="text-red-400 hover:text-red-300 transition-colors text-sm"
+                  className="text-[#DE4B43] hover:text-[#DE4B43]/80 transition-colors text-sm font-medium"
                 >
                   Eliminar
                 </button>
               </div>
             ))}
             {(!chofer?.contactos || chofer.contactos.length === 0) && (
-              <p className="text-slate-500 text-sm">No hay contactos registrados</p>
+              <p className="text-[#718096] text-sm">No hay contactos registrados</p>
             )}
           </div>
           <form onSubmit={handleContactoSubmit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Nombre</label>
+                <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-1">Nombre</label>
                 <input
                   type="text"
                   name="nombre"
                   value={contactoForm.nombre}
                   onChange={handleContactoChange}
                   required
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#F0F3F8] rounded-xl px-3 py-2.5 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Apellido</label>
+                <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-1">Apellido</label>
                 <input
                   type="text"
                   name="apellido"
                   value={contactoForm.apellido}
                   onChange={handleContactoChange}
                   required
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#F0F3F8] rounded-xl px-3 py-2.5 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Teléfono</label>
+                <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-1">Teléfono</label>
                 <input
                   type="text"
                   name="telefono"
                   value={contactoForm.telefono}
                   onChange={handleContactoChange}
                   required
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#F0F3F8] rounded-xl px-3 py-2.5 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Parentesco</label>
+                <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-1">Parentesco</label>
                 <input
                   type="text"
                   name="parentesco"
@@ -342,14 +360,14 @@ export default function ChoferDashboard() {
                   onChange={handleContactoChange}
                   required
                   placeholder="Hijo, Padre, Cónyuge..."
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#F0F3F8] rounded-xl px-3 py-2.5 text-[#4A5568] placeholder-[#718096]/50 text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
                 />
               </div>
             </div>
             <button
               type="submit"
               disabled={contactoLoading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors text-sm"
+              className="w-full bg-[#F3A85B] hover:bg-[#EA8559] disabled:bg-[#F3A85B]/60 text-white font-bold py-2.5 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm"
             >
               {contactoLoading ? 'Agregando...' : 'Agregar Contacto'}
             </button>
@@ -357,53 +375,50 @@ export default function ChoferDashboard() {
         </div>
       </div>
 
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-        <h2 className="text-lg font-bold text-white mb-4">Registro de Vehículo</h2>
+      <div className="neu-card p-6">
+        <h2 className="text-lg font-bold text-[#4A5568] mb-4">Registro de Vehículo</h2>
         {vehiculoMsg && (
-          <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${
-            vehiculoMsg.type === 'success'
-              ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-              : 'bg-red-500/10 border border-red-500/20 text-red-400'
-          }`}>
+          <div className={`text-sm p-3 rounded-xl mb-4 flex items-center gap-2 ${vehiculoMsg.type === 'success' ? 'bg-[#E36852]/10 text-[#E36852]' : 'bg-[#DE4B43]/10 text-[#DE4B43]'
+            }`}>
             <span>{vehiculoMsg.text}</span>
           </div>
         )}
         <form onSubmit={handleVehiculoSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Marca</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Marca</label>
             <input
               type="text"
               name="marca"
               value={vehiculoForm.marca}
               onChange={handleVehiculoChange}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Modelo</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Modelo</label>
             <input
               type="text"
               name="modelo"
               value={vehiculoForm.modelo}
               onChange={handleVehiculoChange}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Placa</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Placa</label>
             <input
               type="text"
               name="placa"
               value={vehiculoForm.placa}
               onChange={handleVehiculoChange}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Año</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Año</label>
             <input
               type="number"
               name="anio"
@@ -412,25 +427,25 @@ export default function ChoferDashboard() {
               required
               min="2000"
               max="2030"
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Color</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Color</label>
             <input
               type="text"
               name="color"
               value={vehiculoForm.color}
               onChange={handleVehiculoChange}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div className="flex items-end">
             <button
               type="submit"
               disabled={vehiculoLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-semibold py-3 px-4 rounded-xl transition-colors text-sm"
+              className="w-full bg-[#E36852] hover:bg-[#EA8559] disabled:bg-[#E36852]/60 text-white font-bold py-3 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98] text-sm"
             >
               {vehiculoLoading ? 'Registrando...' : 'Registrar Vehículo'}
             </button>
@@ -439,34 +454,36 @@ export default function ChoferDashboard() {
       </div>
 
       {vehiculos.length > 0 && (
-        <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Mis Vehículos</h2>
+        <div className="neu-card p-6">
+          <h2 className="text-lg font-bold text-[#4A5568] mb-4">Mis Vehículos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {vehiculos.map((v) => {
               const status = tieneRevision(v);
+              const statusMap = {
+                apto: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
+                inactivo: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+                sin_revision: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
+              };
+              const statusLabel = { apto: 'Apto', inactivo: 'Inactivo', sin_revision: 'Sin Revisión' };
               return (
-                <div key={v.id} className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
+                <div key={v.id} className="neu-card-sm p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <p className="text-white font-semibold">{v.marca} {v.modelo}</p>
-                      <p className="text-xs text-slate-400">{v.placa}</p>
+                      <p className="text-[#4A5568] font-semibold">{v.marca} {v.modelo}</p>
+                      <p className="text-xs text-[#718096]">{v.placa}</p>
                     </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                      status === 'apto' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                      status === 'inactivo' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                      'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                    }`}>
-                      {status === 'apto' ? 'Apto' : status === 'inactivo' ? 'Inactivo' : 'Sin Revisión'}
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase border ${statusMap[status]}`}>
+                      {statusLabel[status]}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-slate-500">Año:</span>
-                      <span className="text-slate-300 ml-1">{v.anio}</span>
+                      <span className="text-[#718096]">Año:</span>
+                      <span className="text-[#4A5568] ml-1">{v.anio}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500">Color:</span>
-                      <span className="text-slate-300 ml-1">{v.color}</span>
+                      <span className="text-[#718096]">Color:</span>
+                      <span className="text-[#4A5568] ml-1">{v.color}</span>
                     </div>
                   </div>
                 </div>
@@ -476,13 +493,13 @@ export default function ChoferDashboard() {
         </div>
       )}
 
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
-        <div className="p-5 border-b border-slate-700 flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-lg font-bold text-white">Bitácora de Viajes</h2>
+      <div className="neu-card overflow-hidden">
+        <div className="p-5 border-b border-[#E2E8F0] flex flex-wrap items-center justify-between gap-4">
+          <h2 className="text-lg font-bold text-[#4A5568]">Bitácora de Viajes</h2>
           <select
             value={filtroEstado}
             onChange={(e) => { setFiltroEstado(e.target.value); setTrasladosPage(1); }}
-            className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-emerald-500"
+            className="bg-[#F0F3F8] rounded-xl px-4 py-2 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
           >
             <option value="">Todos</option>
             <option value="PENDIENTE">Pendientes por Cancelar</option>
@@ -493,7 +510,7 @@ export default function ChoferDashboard() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-wider">
+              <tr className="bg-[#F0F3F8] text-[#718096] text-xs uppercase tracking-wider">
                 <th className="text-left p-4 font-semibold">Fecha</th>
                 <th className="text-left p-4 font-semibold">Origen</th>
                 <th className="text-left p-4 font-semibold">Destino</th>
@@ -502,30 +519,25 @@ export default function ChoferDashboard() {
                 <th className="text-center p-4 font-semibold">Estado</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className="divide-y divide-[#E2E8F0]">
               {trasladosLoading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-slate-500">Cargando...</td>
+                  <td colSpan={6} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : traslados.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-slate-500">No hay viajes registrados</td>
+                  <td colSpan={6} className="p-8 text-center text-[#718096]">No hay viajes registrados</td>
                 </tr>
               ) : (
                 traslados.map((t) => (
-                  <tr key={t.id} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="p-4 text-slate-300 whitespace-nowrap">{formatDate(t.fecha)}</td>
-                    <td className="p-4 text-white max-w-[160px] truncate">{t.origen}</td>
-                    <td className="p-4 text-white max-w-[160px] truncate">{t.destino}</td>
-                    <td className="p-4 text-emerald-400 font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
-                    <td className="p-4 text-blue-400 font-semibold text-right">${t.ganancia_chofer?.toFixed(2)}</td>
+                  <tr key={t.id} className="hover:bg-[#F0F3F8] transition-colors">
+                    <td className="p-4 text-[#718096] whitespace-nowrap">{formatDate(t.fecha)}</td>
+                    <td className="p-4 text-[#4A5568] max-w-[160px] truncate">{t.origen}</td>
+                    <td className="p-4 text-[#4A5568] max-w-[160px] truncate">{t.destino}</td>
+                    <td className="p-4 text-[#E36852] font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
+                    <td className="p-4 text-[#F3A85B] font-semibold text-right">${t.ganancia_chofer?.toFixed(2)}</td>
                     <td className="p-4 text-center">
-                      <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold ${
-                        t.estado === 'COMPLETADO' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                        t.estado === 'PENDIENTE' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
-                        t.estado === 'PAGADO' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                        'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                      }`}>
+                      <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold border ${statusBadge(t.estado)}`}>
                         {t.estado === 'PAGADO' ? 'Cancelado' : t.estado}
                       </span>
                     </td>
@@ -536,19 +548,19 @@ export default function ChoferDashboard() {
           </table>
         </div>
         {trasladosTotalPages > 1 && (
-          <div className="flex items-center justify-between p-4 border-t border-slate-700">
+          <div className="flex items-center justify-between p-4 border-t border-[#E2E8F0]">
             <button
               disabled={trasladosPage <= 1}
               onClick={() => setTrasladosPage((p) => p - 1)}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="text-sm text-slate-400">Página {trasladosPage} de {trasladosTotalPages}</span>
+            <span className="text-sm text-[#718096]">Página {trasladosPage} de {trasladosTotalPages}</span>
             <button
               disabled={trasladosPage >= trasladosTotalPages}
               onClick={() => setTrasladosPage((p) => p + 1)}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Siguiente
             </button>

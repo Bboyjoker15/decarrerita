@@ -550,6 +550,61 @@ Detalles:
     * Verificacion Final: El flujo completo de comunicacion extremo a extremo 
       (UI -> Axios interceptor -> Express API -> Prisma Client -> Docker DB) 
       quedo validado y operando sin errores en consola para todos los roles.
+
+----------------------------------------------------------------
+ENTRADA #18 - 2026-07-17
+----------------------------------------------------------------
+Nombre:    Wulliber Yepez, Diego Blanco
+Fecha:     2026-07-17
+Titulo:    Rediseño Visual Neomórfico (Soft UI), Integración de Animación 
+           por Partículas Lightswind y Maquetado Institucional de Landing 
+           Page y Login Lateral
+Archivos:  frontend/src/index.css, frontend/tailwind.config.js, 
+           frontend/src/views/LandingView.jsx, frontend/src/views/LoginView.jsx, 
+           frontend/src/App.jsx, docs/BITACORA.txt
+Detalles:
+  - FASE 1: REFACTORIZACIÓN ESTILÍSTICA NEOMÓRFICA (MODO CLARO)
+    * Migración absoluta de la paleta oscura a un entorno visual limpio en Modo 
+      Claro utilizando como color base de lienzo el tono '#E0E5EC'.
+    * Corrección de sombras duras: Se eliminaron los puntos de luz artificiales 
+      y destellos reflectivos blancos de los componentes. Se reescribieron las 
+      clases '.neo-extruded' y '.neo-pressed' en index.css para implementar 
+      una fórmula de sombreado perimetral, neutro y simétrico en los bordes.
+    * Incorporación de microinteracciones táctiles reales sobre los elementos 
+      operativos (.neo-btn), forzando una transición cóncava mediante la pseudo-
+      clase 'active:' combinada con una leve reducción de escala (scale-98).
+
+  - FASE 2: IMPLEMENTACIÓN DE ANIMACIÓN FLUIDA (LIGHTSWIND)
+    * Integración y despliegue del componente nativo 'ParticlesBackground' provisto 
+      por la librería Lightswind tras configurar con éxito el alias de importación 
+      y aplicar el esquema de color 'Amber'.
+    * Ajuste de la física del renderizado: Se limitó el lienzo a una paleta de 
+      burbujas cálidas de la marca (durazno, naranja y coral) con velocidad controlada 
+      y desactivación total de eventos de puntero (pointer-events: none) para evitar 
+      bloqueos en la captura de eventos de formularios.
+
+  - FASE 3: MAQUETADO DE LA NUEVA LANDING PAGE (CROSS-ROADS)
+    * Transformación de la cabecera en una Navbar fluida: Se redistribuyeron los 
+      nodos del DOM alineando el logotipo al extremo izquierdo, centralizando 
+      geométricamente los enlaces reales de navegación ("Rutas", "Flota", "Contacto") 
+      y empujando el botón "Iniciar Sesión" al extremo derecho.
+    * Eliminación de Datos Ficticios y Código Muerto: Se purgó por completo el 
+      formulario de simulación externa de rutas y se sustituyó por un panel 
+      institucional centrado que detalla el funcionamiento del ecosistema digital.
+    * Purga de contenido comercial falsificado: Las tarjetas de unidades y servicios 
+      fueron reescritas en español con las reglas del enunciado relacional (comisión 
+      del 30% corporativo, nota aprobatoria psicológica >= 73 y revisión de 
+      unidades >= 65).
+    * Despliegue de Panel Bento de Roles: Se reemplazó la sección genérica de contacto 
+      por una cuadrícula modular limpia que expone las tareas y niveles de control 
+      de los 4 roles reales del sistema (Cliente, Chofer, Administrativo y Admin).
+
+  - FASE 4: ARQUITECTURA DE LOGIN LATERAL (SPLIT-SCREEN)
+    * Reestructuración de 'LoginView.jsx' en formato de pantalla dividida. El ala 
+      izquierda actúa como marquesina animada dinámica controlada por el lienzo de 
+      partículas y el logotipo de Cross-Roads. El ala derecha concentra de forma 
+      limpia el formulario reactivo de autenticación, integrando inputs cóncavos 
+      (.neo-input) y botones neomórficos acentuados en el naranja plano de la marca.
 ----------------------------------------------------------------
 
 ==============================================================

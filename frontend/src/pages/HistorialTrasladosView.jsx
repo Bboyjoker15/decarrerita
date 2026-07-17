@@ -64,39 +64,49 @@ export default function HistorialTrasladosView() {
     });
   };
 
+  const statusBadge = (estado) => {
+    const map = {
+      COMPLETADO: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
+      PENDIENTE: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
+      PAGADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+      CANCELADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+    };
+    return map[estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20';
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Historial de Traslados</h1>
-        <p className="text-slate-400 text-sm mt-1">Consulta y filtra tus traslados registrados</p>
+        <h1 className="text-2xl font-bold text-[#4A5568]">Historial de Traslados</h1>
+        <p className="text-[#718096] text-sm mt-1">Consulta y filtra tus traslados registrados</p>
       </div>
 
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 p-5">
+      <div className="neu-card p-5">
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Fecha Inicio</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Fecha Inicio</label>
             <input
               type="date"
               value={fechaInicio}
               onChange={(e) => setFechaInicio(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-2.5 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Fecha Fin</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Fecha Fin</label>
             <input
               type="date"
               value={fechaFin}
               onChange={(e) => setFechaFin(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-2.5 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Estado de Pago</label>
+            <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Estado de Pago</label>
             <select
               value={estadoFiltro}
               onChange={(e) => setEstadoFiltro(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#F0F3F8] rounded-xl px-4 py-2.5 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
             >
               <option value="">Todos</option>
               <option value="PENDIENTE">Pendientes por Cancelar</option>
@@ -108,13 +118,13 @@ export default function HistorialTrasladosView() {
           <div className="flex gap-2">
             <button
               onClick={handleFilter}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors"
+              className="flex-1 bg-[#E36852] hover:bg-[#EA8559] text-white text-sm font-bold py-2.5 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98]"
             >
               Filtrar
             </button>
             <button
               onClick={clearFilters}
-              className="bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors"
+              className="bg-white text-[#718096] text-sm font-semibold py-2.5 px-4 rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm hover:text-[#DE4B43]"
             >
               Limpiar
             </button>
@@ -122,11 +132,11 @@ export default function HistorialTrasladosView() {
         </div>
       </div>
 
-      <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
+      <div className="neu-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-wider">
+              <tr className="bg-[#F0F3F8] text-[#718096] text-xs uppercase tracking-wider">
                 <th className="text-left p-4 font-semibold">Fecha</th>
                 <th className="text-left p-4 font-semibold">Origen</th>
                 <th className="text-left p-4 font-semibold">Destino</th>
@@ -138,41 +148,35 @@ export default function HistorialTrasladosView() {
                 <th className="text-right p-4 font-semibold">Monto</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className="divide-y divide-[#E2E8F0]">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500">Cargando...</td>
+                  <td colSpan={7} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : traslados.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-500">No hay traslados registrados</td>
+                  <td colSpan={7} className="p-8 text-center text-[#718096]">No hay traslados registrados</td>
                 </tr>
               ) : (
                 traslados.map((t) => (
-                  <tr key={t.id} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="p-4 text-slate-300 whitespace-nowrap">{formatDate(t.fecha)}</td>
-                    <td className="p-4 text-white max-w-[160px] truncate">{t.origen}</td>
-                    <td className="p-4 text-white max-w-[160px] truncate">{t.destino}</td>
+                  <tr key={t.id} className="hover:bg-[#F0F3F8] transition-colors">
+                    <td className="p-4 text-[#718096] whitespace-nowrap">{formatDate(t.fecha)}</td>
+                    <td className="p-4 text-[#4A5568] max-w-[160px] truncate">{t.origen}</td>
+                    <td className="p-4 text-[#4A5568] max-w-[160px] truncate">{t.destino}</td>
                     {(user.rol === 'ADMIN' || user.rol === 'ADMINISTRATIVO') && (
-                      <td className="p-4 text-slate-300">
+                      <td className="p-4 text-[#718096]">
                         {t.cliente?.user ? `${t.cliente.user.nombre} ${t.cliente.user.apellido}` : '-'}
                       </td>
                     )}
-                    <td className="p-4 text-slate-300">
+                    <td className="p-4 text-[#718096]">
                       {t.chofer?.user ? `${t.chofer.user.nombre} ${t.chofer.user.apellido}` : '-'}
                     </td>
                     <td className="p-4 text-center">
-                      <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold ${
-                        t.estado === 'COMPLETADO' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                        t.estado === 'PENDIENTE' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
-                        t.estado === 'PAGADO' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                        t.estado === 'CANCELADO' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                        'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                      }`}>
+                      <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold border ${statusBadge(t.estado)}`}>
                         {t.estado}
                       </span>
                     </td>
-                    <td className="p-4 text-emerald-400 font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
+                    <td className="p-4 text-[#E36852] font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
                   </tr>
                 ))
               )}
@@ -180,19 +184,19 @@ export default function HistorialTrasladosView() {
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="flex items-center justify-between p-4 border-t border-slate-700">
+          <div className="flex items-center justify-between p-4 border-t border-[#E2E8F0]">
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="text-sm text-slate-400">Página {page} de {totalPages}</span>
+            <span className="text-sm text-[#718096]">Página {page} de {totalPages}</span>
             <button
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-3 py-1.5 text-sm rounded-lg bg-slate-700 text-slate-300 disabled:opacity-40 hover:bg-slate-600 transition-colors"
+              className="neu-btn px-3 py-1.5 text-sm text-[#718096] disabled:opacity-40"
             >
               Siguiente
             </button>

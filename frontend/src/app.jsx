@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import LandingView from './views/LandingView';
 import LoginView from './views/LoginView';
 import MainLayout from './components/MainLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,6 +28,7 @@ function RoleRedirect() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<LandingView />} />
       <Route path="/login" element={<LoginView />} />
 
       <Route
@@ -73,7 +75,6 @@ export default function App() {
         />
 
         <Route path="/dashboard" element={<RoleRedirect />} />
-        <Route index element={<RoleRedirect />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

@@ -1,3 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#E0E5EC] text-[#4A5568] antialiased;
+  }
+
+  ::selection {
+    background-color: #E36852;
+    color: white;
+  }
+}
+
+@layer components {
+  .neo-extruded {
+    background: #E0E5EC;
+    box-shadow: 6px 6px 16px #b8bcc2, -6px -6px 16px #cfd4dc;
+    transition: all 0.3s ease;
+  }
+
+  .neo-pressed {
+    background: #E0E5EC;
+    box-shadow: inset 4px 4px 8px #b8bcc2, inset -4px -4px 8px #cfd4dc;
+    transition: all 0.3s ease;
+  }
+
+  .neo-input {
+    background: #E0E5EC;
+    box-shadow: inset 4px 4px 8px #b8bcc2, inset -4px -4px 8px #cfd4dc;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .neo-input:focus {
+    box-shadow: inset 4px 4px 12px #b8bcc2, inset -4px -4px 12px #cfd4dc;
+  }
+
+  .neo-btn {
+    background: #E0E5EC;
+    box-shadow: 6px 6px 16px #b8bcc2, -6px -6px 16px #cfd4dc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .neo-btn:active {
+    background: #E0E5EC;
+    box-shadow: inset 4px 4px 8px #b8bcc2, inset -4px -4px 8px #cfd4dc;
+    transform: scale(0.98);
+  }
+
+  .neu-card {
+    @apply bg-white rounded-2xl shadow-neu;
+  }
+
+  .neu-card-sm {
+    @apply bg-white rounded-xl shadow-neu-sm;
+  }
+
+  .neu-inset {
+    @apply bg-[#E0E5EC] rounded-2xl shadow-neu-inset;
+  }
+
+  .neu-inset-sm {
+    @apply bg-[#E0E5EC] rounded-xl shadow-neu-inset-sm;
+  }
+
+  .neu-btn {
+    @apply bg-white rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98];
+  }
+
+  .neu-btn-primary {
+    @apply rounded-xl shadow-neu-sm transition-all duration-200 active:shadow-neu-inset-sm active:scale-[0.98];
+  }
+}
