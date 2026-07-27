@@ -279,7 +279,9 @@ function LiquidacionesTab() {
   const handleChoferChange = (id) => {
     setSelectedChofer(id);
     const chofer = choferes.find((c) => c.id === parseInt(id, 10));
-    setChoferSaldo(chofer?.saldo || 0);
+    const s = chofer?.saldo || 0;
+    setChoferSaldo(s);
+    setForm((p) => ({ ...p, monto: s > 0 ? s.toFixed(2) : '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -324,7 +326,7 @@ function LiquidacionesTab() {
           <option value="">Seleccionar chofer</option>
           {choferes.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.user?.nombre} {c.user?.apellido} - Saldo: ${c.saldo?.toFixed(2)}
+              {c.user?.nombre} {c.user?.apellido} - Saldo Pendiente: ${c.saldo?.toFixed(2)}
             </option>
           ))}
         </Select>
@@ -392,12 +394,17 @@ function GananciasReport() {
   const fetchReport = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ limit: '1000' });
+      const params = new URLSearchParams();
       if (fechaInicio) params.append('fechaInicio', fechaInicio);
       if (fechaFin) params.append('fechaFin', fechaFin);
-      const res = await api.get(`/traslados?${params}`);
-      const viajes = res.data.data || [];
-      const ganancias = viajes.reduce((acc, v) => acc + (v.ganancia_empresa || 0), 0);
+
+      const [repRes, trasRes] = await Promise.all([
+        api.get(`/reportes/ganancias-empresa?${params}`),
+        api.get(`/traslados?${params}&limit=1000`),
+      ]);
+
+      const ganancias = repRes.data.data?.total_ganancias || 0;
+      const viajes = trasRes.data.data || [];
       setTotalGanancias(ganancias);
       setTotalViajes(viajes.length);
     } catch {

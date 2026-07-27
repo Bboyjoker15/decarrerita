@@ -9,10 +9,16 @@ const prisma = require("../config/database");
 function buildFechaFilter(filtrosFechas = {}) {
   const filter = {};
   if (filtrosFechas.fechaInicio) {
-    filter.gte = new Date(filtrosFechas.fechaInicio);
+    const startStr = filtrosFechas.fechaInicio.includes("T")
+      ? filtrosFechas.fechaInicio
+      : `${filtrosFechas.fechaInicio}T00:00:00.000Z`;
+    filter.gte = new Date(startStr);
   }
   if (filtrosFechas.fechaFin) {
-    filter.lte = new Date(filtrosFechas.fechaFin);
+    const endStr = filtrosFechas.fechaFin.includes("T")
+      ? filtrosFechas.fechaFin
+      : `${filtrosFechas.fechaFin}T23:59:59.999Z`;
+    filter.lte = new Date(endStr);
   }
   return Object.keys(filter).length > 0 ? { fecha: filter } : {};
 }

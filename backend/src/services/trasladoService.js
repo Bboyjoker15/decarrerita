@@ -90,13 +90,15 @@ async function listarPorChofer(choferId, pagination = {}, filtrosFechas = {}) {
   return { data, total };
 }
 
-async function crear({ cliente_id, origen, destino, distancia_km, tarifa_km }) {
+async function crear({ cliente_id, origen, destino }) {
   const cliente = await clienteRepository.findById(cliente_id);
   if (!cliente) return { error: "CLIENTE.NO_ENCONTRADO" };
 
-  const monto_total = distancia_km * tarifa_km;
+  const MONTO_TOTAL = 10.0;
+  const GANANCIA_EMPRESA = 3.0;
+  const GANANCIA_CHOFER = 7.0;
 
-  if (cliente.saldo < monto_total) {
+  if (cliente.saldo < MONTO_TOTAL) {
     return { error: "CLIENTE.SALDO_INSUFICIENTE" };
   }
 
@@ -106,12 +108,9 @@ async function crear({ cliente_id, origen, destino, distancia_km, tarifa_km }) {
 
   const vehiculo = chofer.vehiculos[0];
 
-  const ganancia_empresa = parseFloat((monto_total * PORCENTAJE_EMPRESA).toFixed(2));
-  const ganancia_chofer = parseFloat((monto_total * PORCENTAJE_CHOFER).toFixed(2));
+  await clienteRepository.update(cliente_id, { saldo: parseFloat((cliente.saldo - MONTO_TOTAL).toFixed(2)) });
 
-  await clienteRepository.update(cliente_id, { saldo: parseFloat((cliente.saldo - monto_total).toFixed(2)) });
-
-  await choferRepository.update(chofer.id, { saldo: parseFloat((chofer.saldo + ganancia_chofer).toFixed(2)) });
+  await choferRepository.update(chofer.id, { saldo: parseFloat((chofer.saldo + GANANCIA_CHOFER).toFixed(2)) });
 
   const traslado = await trasladoRepository.create({
     cliente_id,
@@ -119,11 +118,9 @@ async function crear({ cliente_id, origen, destino, distancia_km, tarifa_km }) {
     vehiculo_id: vehiculo.id,
     origen,
     destino,
-    distancia_km,
-    tarifa_km,
-    monto_total,
-    ganancia_empresa,
-    ganancia_chofer,
+    monto_total: MONTO_TOTAL,
+    ganancia_empresa: GANANCIA_EMPRESA,
+    ganancia_chofer: GANANCIA_CHOFER,
     estado: "PENDIENTE",
   });
 

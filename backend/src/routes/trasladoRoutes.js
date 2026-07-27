@@ -13,7 +13,7 @@ router.use(authenticate);
 router.get("/mis-traslados", authorize(ROLES.CLIENTE), trasladoController.misTraslados);
 router.get("/chofer/mis-traslados", authorize(ROLES.CHOFER), trasladoController.misTrasladosChofer);
 
-router.get("/", authorize(ROLES.ADMIN), trasladoController.listar);
+router.get("/", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), trasladoController.listar);
 router.post("/", authorize(ROLES.CLIENTE), trasladoValidator.crear, validate, trasladoController.crear);
 router.get("/:id", authorize(ROLES.ADMIN, ROLES.CLIENTE, ROLES.CHOFER), trasladoController.obtenerPorId);
 router.put("/:id/estado", authorize(ROLES.CHOFER), trasladoValidator.actualizarEstado, validate, trasladoController.actualizarEstado);

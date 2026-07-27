@@ -46,8 +46,8 @@ async function crear({ chofer_id, administrativo_id, monto, referencia }) {
 
     // Cierre contable: marca como PAGADO todos los traslados del chofer pendientes de liquidar
     await tx.traslado.updateMany({
-      where: { chofer_id, estado_pago: "PENDIENTE" },
-      data: { estado_pago: "PAGADO" },
+      where: { chofer_id, estado: { in: ["PENDIENTE", "COMPLETADO"] } },
+      data: { estado: "PAGADO", estado_pago: "PAGADO" },
     });
 
     return nuevoPago;

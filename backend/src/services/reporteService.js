@@ -5,13 +5,17 @@ const prisma = require("../config/database");
  * Filtra traslados con estado COMPLETADO o PAGADO (traslados finalizados).
  */
 async function calcularGananciasEmpresa({ fechaInicio, fechaFin }) {
-  const inicio = fechaInicio ? new Date(fechaInicio) : new Date("1970-01-01");
-  const fin = fechaFin ? new Date(fechaFin) : new Date("2100-12-31");
+  const inicio = fechaInicio
+    ? new Date(fechaInicio.includes("T") ? fechaInicio : `${fechaInicio}T00:00:00.000Z`)
+    : new Date("1970-01-01T00:00:00.000Z");
+  const fin = fechaFin
+    ? new Date(fechaFin.includes("T") ? fechaFin : `${fechaFin}T23:59:59.999Z`)
+    : new Date("2100-12-31T23:59:59.999Z");
 
   const resultado = await prisma.traslado.aggregate({
     _sum: { ganancia_empresa: true },
     where: {
-      estado: { in: ["COMPLETADO", "PAGADO"] },
+      estado: { in: ["COMPLETADO", "PAGADO", "PENDIENTE"] },
       fecha: { gte: inicio, lte: fin },
     },
   });
@@ -27,8 +31,12 @@ async function calcularGananciasEmpresa({ fechaInicio, fechaFin }) {
  * Calcula el acumulado de pagos realizados a un chofer en un periodo especifico.
  */
 async function calcularPagosChofer(choferId, { fechaInicio, fechaFin }) {
-  const inicio = fechaInicio ? new Date(fechaInicio) : new Date("1970-01-01");
-  const fin = fechaFin ? new Date(fechaFin) : new Date("2100-12-31");
+  const inicio = fechaInicio
+    ? new Date(fechaInicio.includes("T") ? fechaInicio : `${fechaInicio}T00:00:00.000Z`)
+    : new Date("1970-01-01T00:00:00.000Z");
+  const fin = fechaFin
+    ? new Date(fechaFin.includes("T") ? fechaFin : `${fechaFin}T23:59:59.999Z`)
+    : new Date("2100-12-31T23:59:59.999Z");
 
   const resultado = await prisma.pagoChofer.aggregate({
     _sum: { monto: true },

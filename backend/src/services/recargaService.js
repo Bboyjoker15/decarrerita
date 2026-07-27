@@ -23,13 +23,21 @@ async function listarPorCliente(clienteId, pagination = {}) {
   return { data, total };
 }
 
-async function crear({ cliente_id, banco_id, referencia, monto }) {
+async function crear({ cliente_id, banco_id, referencia, monto, fecha_deposito }) {
   if (monto <= 0) return { error: "RECARGA.MONTO_INVALIDO" };
 
   const cliente = await clienteRepository.findById(cliente_id);
   if (!cliente) return { error: "CLIENTE.NO_ENCONTRADO" };
 
-  const recarga = await recargaRepository.create({ cliente_id, banco_id, referencia, monto });
+  const depositoDate = fecha_deposito ? new Date(fecha_deposito) : null;
+
+  const recarga = await recargaRepository.create({
+    cliente_id,
+    banco_id,
+    referencia,
+    monto,
+    ...(depositoDate && { fecha_deposito: depositoDate }),
+  });
 
   await clienteRepository.update(cliente_id, { saldo: cliente.saldo + monto });
 

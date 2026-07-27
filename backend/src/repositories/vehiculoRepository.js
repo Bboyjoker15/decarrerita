@@ -5,7 +5,7 @@ async function findAll(filters = {}, pagination = {}) {
     where: filters,
     skip: pagination.skip,
     take: pagination.take,
-    include: { chofer: { include: { user: true } } },
+    include: { chofer: { include: { user: true } }, revisiones: true },
   });
 }
 
@@ -21,7 +21,10 @@ async function findById(id) {
 }
 
 async function findByChoferId(choferId) {
-  return prisma.vehiculo.findMany({ where: { chofer_id: choferId } });
+  return prisma.vehiculo.findMany({
+    where: { chofer_id: choferId },
+    include: { revisiones: true },
+  });
 }
 
 async function create(data) {

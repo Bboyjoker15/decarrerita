@@ -34,6 +34,7 @@ async function crear(req, res, next) {
       banco_id: req.body.banco_id,
       referencia: req.body.referencia,
       monto: req.body.monto,
+      fecha_deposito: req.body.fecha_deposito,
     });
 
     if (result.error) return error(res, MENSAJES.RECARGA[result.error.split(".")[1]], 400);

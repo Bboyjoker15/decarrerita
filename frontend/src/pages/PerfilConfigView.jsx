@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function PerfilConfigView() {
   const { user } = useAuth();
+  const [profile, setProfile] = useState(null);
   const [form, setForm] = useState({ nombre: '', apellido: '', telefono: '', correo: '' });
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
@@ -14,6 +15,7 @@ export default function PerfilConfigView() {
       try {
         const res = await api.get('/auth/me');
         const u = res.data.data;
+        setProfile(u);
         setForm({ nombre: u.nombre, apellido: u.apellido, telefono: u.telefono, correo: u.correo });
       } catch {
         setMsg({ type: 'error', text: 'Error al cargar perfil' });
@@ -33,7 +35,10 @@ export default function PerfilConfigView() {
     setMsg(null);
     setLoading(true);
     try {
-      await api.put('/auth/me', form);
+      const res = await api.put('/auth/me', form);
+      if (res.data.data) {
+        setProfile(res.data.data);
+      }
       setMsg({ type: 'success', text: 'Perfil actualizado exitosamente' });
     } catch (err) {
       const text = err.response?.data?.error || 'Error al actualizar perfil';
@@ -62,12 +67,12 @@ export default function PerfilConfigView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-[#E2E8F0]">
           <div>
             <label className="text-xs text-[#718096] uppercase tracking-wider font-semibold">Cédula</label>
-            <p className="text-[#4A5568] font-medium mt-1">{user?.cedula || '-'}</p>
+            <p className="text-[#4A5568] font-medium mt-1">{profile?.cedula || user?.cedula || '-'}</p>
           </div>
           <div>
             <label className="text-xs text-[#718096] uppercase tracking-wider font-semibold">Rol</label>
             <span className="inline-block mt-1 bg-[#E36852]/10 text-[#E36852] text-xs px-2.5 py-1 rounded-full font-semibold border border-[#E36852]/20">
-              {user?.rol}
+              {profile?.rol || user?.rol}
             </span>
           </div>
         </div>

@@ -606,6 +606,52 @@ Detalles:
       limpia el formulario reactivo de autenticación, integrando inputs cóncavos 
       (.neo-input) y botones neomórficos acentuados en el naranja plano de la marca.
 ----------------------------------------------------------------
+----------------------------------------------------------------
+ENTRADA #19 - 2026-07-26
+----------------------------------------------------------------
+Nombre:    Wulliber Yepez
+Fecha:     2026-07-26
+Titulo:    Reconfiguración a Supabase CLI, Purga del Modelo Relacional 
+           (Tarifa Fija) e Implementación de Fecha en Recargas de Saldo
+Archivos:  backend/.env, backend/prisma/schema.prisma, backend/prisma/seed.js, 
+           backend/src/validators/trasladoValidator.js, 
+           backend/src/validators/recargaValidator.js, 
+           backend/src/services/trasladoService.js, 
+           backend/src/services/recargaService.js, 
+           frontend/src/views/ClienteDashboard.jsx, docs/BITACORA.txt
+Detalles:
+  - FASE 1: MIGRACIÓN DE INFRAESTRUCTURA A SUPABASE CLI
+    * Se modificó la variable 'DATABASE_URL' en 'backend/.env' para redirigir 
+      el motor de persistencia del ORM Prisma desde el contenedor Docker aislado 
+      (puerto 5432) hacia la instancia nativa de PostgreSQL administrada por 
+      Supabase CLI (127.0.0.1:54322).
+    * Sincronización exitosa del servidor Express (localhost:4000) y habilitación 
+      de Supabase Studio (localhost:54323) como cliente visual principal para 
+      la administración de datos y consultas en tiempo de desarrollo.
+
+  - FASE 2: PURGA DE COLUMNAS MUERTAS Y TARIFA FIJA ($10 USD)
+    * Se eliminaron del archivo 'schema.prisma' y de la base de datos las 
+      columnas 'distancia_km' y 'tarifa_km' para respetar las reglas estrictas 
+      de normalización y evitar atributos sin uso en el diccionario de datos.
+    * Se ejecutaron los comandos 'npx prisma db push' e 'npx prisma db seed' 
+      sobre la instancia de Supabase para reflejar las 12 tablas actualizadas.
+    * Implementación de la regla de negocio de Tarifa Fija Unificada de $10.00 USD 
+      en 'trasladoService.js' ($3.00 USD / 30% empresa y $7.00 USD / 70% chofer).
+    * Limpieza del payload en 'ClienteDashboard.jsx' enviando únicamente los 
+      campos 'origen' y 'destino'.
+
+  - FASE 3: CAPTURA Y REGISTRO DE FECHA EN RECARGAS DE SALDO
+    * Actualización de 'recargaValidator.js' y 'recargaService.js' para procesar 
+      la fecha exacta de transferencia bancaria enviada desde la interfaz.
+    * Modificación de 'ClienteDashboard.jsx' agregando el campo tipo fecha 
+      (<input type="date">) en el formulario de recarga e integración de la 
+      columna formateada "FECHA DE TRANSFERENCIA" en el historial.
+
+  - FASE 4: PROTOCOLO Y MATRIZ DE AUDITORÍA E2E
+    * Estructuración del protocolo de pruebas de aceptación por roles (Cliente, 
+      Chofer, Administrativo, Admin) con credenciales predeterminadas para la 
+      verificación integral del sistema antes de la entrega final.
+----------------------------------------------------------------
 
 ==============================================================
                     FIN DE LA BITACORA

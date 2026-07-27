@@ -95,7 +95,7 @@ async function main() {
       user_id: choferUser.id,
       banco_id: banco1.id,
       numero_cuenta: "0102-123456-789",
-      saldo: 0,
+      saldo: 7.0,
     },
   });
 
@@ -213,6 +213,49 @@ async function main() {
       vehiculo_id: vehiculo2.id,
       calificacion: 82,
     },
+  });
+
+  // Traslado inicial de prueba
+  await prisma.traslado.create({
+    data: {
+      cliente_id: cliente.id,
+      chofer_id: chofer1.id,
+      vehiculo_id: vehiculo1.id,
+      origen: "Plaza Bolivar",
+      destino: "Centro Comercial",
+      monto_total: 10.0,
+      ganancia_empresa: 3.0,
+      ganancia_chofer: 7.0,
+      estado: "COMPLETADO",
+      estado_pago: "PAGADO",
+    },
+  });
+
+  // Recargas de prueba con fechas representativas
+  await prisma.recarga.createMany({
+    data: [
+      {
+        cliente_id: cliente.id,
+        banco_id: banco1.id,
+        referencia: "REF-20250510-001",
+        monto: 50.0,
+        fecha_deposito: new Date("2025-05-10T10:30:00.000Z"),
+      },
+      {
+        cliente_id: cliente.id,
+        banco_id: banco2.id,
+        referencia: "REF-20250615-002",
+        monto: 75.0,
+        fecha_deposito: new Date("2025-06-15T14:00:00.000Z"),
+      },
+      {
+        cliente_id: cliente.id,
+        banco_id: banco3.id,
+        referencia: "REF-20250720-003",
+        monto: 25.0,
+        fecha_deposito: new Date("2025-07-20T09:15:00.000Z"),
+      },
+    ],
   });
 
   console.log("Seed ejecutado exitosamente");

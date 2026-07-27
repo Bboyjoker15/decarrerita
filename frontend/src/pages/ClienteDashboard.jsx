@@ -16,7 +16,8 @@ export default function ClienteDashboard() {
 
   const [bancos, setBancos] = useState([]);
 
-  const [recargaForm, setRecargaForm] = useState({ banco_id: '', referencia: '', monto: '' });
+  const today = new Date().toISOString().split('T')[0];
+  const [recargaForm, setRecargaForm] = useState({ banco_id: '', referencia: '', monto: '', fecha_deposito: today });
   const [recargaLoading, setRecargaLoading] = useState(false);
   const [recargaMsg, setRecargaMsg] = useState(null);
 
@@ -99,9 +100,10 @@ export default function ClienteDashboard() {
         banco_id: parseInt(recargaForm.banco_id, 10),
         referencia: recargaForm.referencia,
         monto: parseFloat(recargaForm.monto),
+        fecha_deposito: recargaForm.fecha_deposito,
       });
       setRecargaMsg({ type: 'success', text: 'Recarga reportada exitosamente. Saldo actualizado.' });
-      setRecargaForm({ banco_id: '', referencia: '', monto: '' });
+      setRecargaForm({ banco_id: '', referencia: '', monto: '', fecha_deposito: today });
       fetchSaldo();
       fetchRecargas(1);
       setRecargasPage(1);
@@ -126,8 +128,6 @@ export default function ClienteDashboard() {
       const res = await api.post('/traslados', {
         origen: trasladoForm.origen,
         destino: trasladoForm.destino,
-        distancia_km: 5.0,
-        tarifa_km: 1.5,
       });
       setViajeAsignado(res.data.data);
       setTrasladoForm({ origen: '', destino: '' });
@@ -157,6 +157,7 @@ export default function ClienteDashboard() {
     const map = {
       COMPLETADO: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
       PENDIENTE: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
+      PAGADO: 'bg-[#38A169]/10 text-[#38A169] border-[#38A169]/20',
       CANCELADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
     };
     return map[estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20';
@@ -243,6 +244,19 @@ export default function ClienteDashboard() {
               />
             </div>
 
+            <div>
+              <label className="block text-xs font-semibold text-[#718096] uppercase tracking-wider mb-2">Fecha de Depósito</label>
+              <input
+                type="date"
+                name="fecha_deposito"
+                value={recargaForm.fecha_deposito}
+                onChange={handleRecargaChange}
+                required
+                max={today}
+                className="w-full bg-[#F0F3F8] rounded-xl px-4 py-3 text-[#4A5568] text-sm shadow-neu-inset-sm focus:outline-none focus:shadow-neu-inset transition duration-200"
+              />
+            </div>
+
             <button
               type="submit"
               disabled={recargaLoading}
@@ -311,7 +325,8 @@ export default function ClienteDashboard() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#F0F3F8] text-[#718096] text-xs uppercase tracking-wider">
-                <th className="text-left p-4 font-semibold">Fecha</th>
+                <th className="text-left p-4 font-semibold">Fecha de Registro</th>
+                <th className="text-left p-4 font-semibold">Fecha de Depósito</th>
                 <th className="text-left p-4 font-semibold">Banco</th>
                 <th className="text-left p-4 font-semibold">Referencia</th>
                 <th className="text-right p-4 font-semibold">Monto</th>
@@ -320,16 +335,17 @@ export default function ClienteDashboard() {
             <tbody className="divide-y divide-[#E2E8F0]">
               {recargasLoading ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-[#718096]">Cargando...</td>
+                  <td colSpan={5} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : recargas.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-[#718096]">No hay recargas registradas</td>
+                  <td colSpan={5} className="p-8 text-center text-[#718096]">No hay recargas registradas</td>
                 </tr>
               ) : (
                 recargas.map((r) => (
                   <tr key={r.id} className="hover:bg-[#F0F3F8] transition-colors">
-                    <td className="p-4 text-[#718096]">{formatDate(r.fecha)}</td>
+                    <td className="p-4 text-[#718096] whitespace-nowrap">{formatDate(r.fecha)}</td>
+                    <td className="p-4 text-[#718096] whitespace-nowrap">{r.fecha_deposito ? formatDate(r.fecha_deposito) : <span className="text-[#A0AEC0] italic text-xs">—</span>}</td>
                     <td className="p-4 text-[#4A5568]">{r.banco?.nombre || '-'}</td>
                     <td className="p-4 text-[#718096] font-mono text-xs">{r.referencia}</td>
                     <td className="p-4 text-[#E36852] font-semibold text-right">${r.monto?.toFixed(2)}</td>

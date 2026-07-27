@@ -55,6 +55,10 @@
     @apply bg-white rounded-2xl shadow-neu;
   }
 
+  .neu-card-lg {
+    @apply bg-white rounded-3xl shadow-neu-lg;
+  }
+
   .neu-card-sm {
     @apply bg-white rounded-xl shadow-neu-sm;
   }

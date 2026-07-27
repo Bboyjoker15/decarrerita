@@ -10,7 +10,7 @@ const router = Router();
 
 router.use(authenticate);
 
-router.get("/", authorize(ROLES.ADMIN), choferController.listar);
+router.get("/", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), choferController.listar);
 
 router.post(
   "/",

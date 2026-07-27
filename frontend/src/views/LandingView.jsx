@@ -111,10 +111,6 @@ export default function LandingView() {
         <div className="flex-1 z-10 flex justify-center">
           <div className="neo-extruded rounded-[3rem] p-10 w-full max-w-md relative">
             <img src="/logo.png" alt="Cross-Roads Logo" className="w-full h-56 object-contain mx-auto" />
-            <div className="absolute bottom-6 right-6 flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#f47d31] animate-pulse" />
-              <span className="text-xs font-semibold text-[#718096]">En línea</span>
-            </div>
           </div>
         </div>
       </section>

@@ -68,7 +68,7 @@ export default function HistorialTrasladosView() {
     const map = {
       COMPLETADO: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
       PENDIENTE: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
-      PAGADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+      PAGADO: 'bg-[#38A169]/10 text-[#38A169] border-[#38A169]/20',
       CANCELADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
     };
     return map[estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20';

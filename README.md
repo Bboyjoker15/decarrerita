@@ -285,8 +285,8 @@ supabase db diff     # Ver diferencias
 
 ## Modelo de Negocio
 
-1. El cliente solicita un traslado especificando origen, destino y distancia
-2. Se calcula el costo: `monto_total = distancia_km × tarifa_km`
+1. El cliente solicita un traslado especificando origen y destino
+2. Se aplica una tarifa fija de $10.00 USD por traslado (`monto_total = 10.00`)
 3. Se verifica que el cliente tenga saldo suficiente
 4. Se descuenta el saldo al cliente
 5. Se asigna aleatoriamente un chofer con vehículo activo

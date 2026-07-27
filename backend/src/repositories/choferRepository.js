@@ -5,7 +5,13 @@ async function findAll(filters = {}, pagination = {}) {
     where: filters,
     skip: pagination.skip,
     take: pagination.take,
-    include: { user: true, banco: true, vehiculos: true, contactos: true },
+    include: {
+      user: true,
+      banco: true,
+      vehiculos: { include: { revisiones: true } },
+      contactos: true,
+      pruebas: true,
+    },
   });
 }
 
@@ -16,12 +22,27 @@ async function countAll(filters = {}) {
 async function findById(id) {
   return prisma.chofer.findUnique({
     where: { id },
-    include: { user: true, banco: true, vehiculos: true, contactos: true, pruebas: true },
+    include: {
+      user: true,
+      banco: true,
+      vehiculos: { include: { revisiones: true } },
+      contactos: true,
+      pruebas: true,
+    },
   });
 }
 
 async function findByUserId(userId) {
-  return prisma.chofer.findUnique({ where: { user_id: userId } });
+  return prisma.chofer.findUnique({
+    where: { user_id: userId },
+    include: {
+      user: true,
+      banco: true,
+      vehiculos: { include: { revisiones: true } },
+      contactos: true,
+      pruebas: true,
+    },
+  });
 }
 
 async function create(data) {

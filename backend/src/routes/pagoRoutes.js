@@ -12,7 +12,7 @@ router.use(authenticate);
 
 router.get("/", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), pagoController.listar);
 router.get("/chofer/:id", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), pagoController.listarPorChofer);
-router.post("/", authorize(ROLES.ADMINISTRATIVO), pagoValidator.crear, validate, pagoController.crear);
+router.post("/", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), pagoValidator.crear, validate, pagoController.crear);
 router.get("/:id", authorize(ROLES.ADMIN, ROLES.ADMINISTRATIVO), pagoController.obtenerPorId);
 
 module.exports = router;

@@ -46,9 +46,9 @@ export default function ViajeModal({ traslado, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
-      <div className="neu-card-lg max-w-md w-full p-6 animate-in" style={{ boxShadow: '16px 16px 32px #d1d9e6, -16px -16px 32px #ffffff' }}>
-        <div className="flex items-center justify-between mb-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md overflow-y-auto">
+      <div className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 animate-in shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <VehicleIcon />
             <h2 className="text-xl font-bold text-[#4A5568]">Viaje Asignado</h2>
@@ -58,8 +58,8 @@ export default function ViajeModal({ traslado, onClose }) {
           </span>
         </div>
 
-        <div className="neu-card-sm p-4 mb-5">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="neu-card-sm p-3.5 mb-3.5">
+          <div className="flex items-center gap-2 mb-2">
             <RouteIcon />
             <span className="text-xs font-semibold text-[#718096] uppercase tracking-wider">Recorrido</span>
           </div>
@@ -71,15 +71,15 @@ export default function ViajeModal({ traslado, onClose }) {
           </p>
         </div>
 
-        <div className="space-y-4 mb-5">
+        <div className="space-y-2 mb-3.5">
           <h3 className="text-xs font-semibold text-[#718096] uppercase tracking-wider">Chofer Asignado</h3>
-          <div className="neu-card-sm p-4 flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#E36852] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-neu-sm">
+          <div className="neu-card-sm p-3.5 flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#E36852] rounded-full flex items-center justify-center text-white font-bold text-base shadow-neu-sm">
               {chofer?.user?.nombre?.[0]}{chofer?.user?.apellido?.[0]}
             </div>
             <div className="flex-1">
-              <p className="text-[#4A5568] font-semibold">{chofer?.user?.nombre} {chofer?.user?.apellido}</p>
-              <div className="flex items-center gap-1 text-sm text-[#718096]">
+              <p className="text-[#4A5568] font-semibold text-sm">{chofer?.user?.nombre} {chofer?.user?.apellido}</p>
+              <div className="flex items-center gap-1 text-xs text-[#718096]">
                 <PhoneIcon />
                 <span>{chofer?.user?.correo}</span>
               </div>
@@ -88,30 +88,30 @@ export default function ViajeModal({ traslado, onClose }) {
         </div>
 
         {vehiculo && (
-          <div className="space-y-3 mb-5">
+          <div className="space-y-2 mb-3.5">
             <h3 className="text-xs font-semibold text-[#718096] uppercase tracking-wider">Vehículo</h3>
             <div className="grid grid-cols-2 gap-2">
-              <div className="neu-card-sm p-3">
-                <p className="text-xs text-[#718096]">Marca</p>
-                <p className="text-sm text-[#4A5568] font-medium">{vehiculo.marca}</p>
+              <div className="neu-card-sm p-2.5">
+                <p className="text-[11px] text-[#718096]">Marca</p>
+                <p className="text-xs text-[#4A5568] font-medium">{vehiculo.marca}</p>
               </div>
-              <div className="neu-card-sm p-3">
-                <p className="text-xs text-[#718096]">Modelo</p>
-                <p className="text-sm text-[#4A5568] font-medium">{vehiculo.modelo}</p>
+              <div className="neu-card-sm p-2.5">
+                <p className="text-[11px] text-[#718096]">Modelo</p>
+                <p className="text-xs text-[#4A5568] font-medium">{vehiculo.modelo}</p>
               </div>
-              <div className="neu-card-sm p-3">
-                <p className="text-xs text-[#718096]">Color</p>
-                <p className="text-sm text-[#4A5568] font-medium">{vehiculo.color}</p>
+              <div className="neu-card-sm p-2.5">
+                <p className="text-[11px] text-[#718096]">Color</p>
+                <p className="text-xs text-[#4A5568] font-medium">{vehiculo.color}</p>
               </div>
-              <div className="neu-card-sm p-3">
-                <p className="text-xs text-[#718096]">Placa</p>
-                <p className="text-sm text-[#4A5568] font-medium">{vehiculo.placa}</p>
+              <div className="neu-card-sm p-2.5">
+                <p className="text-[11px] text-[#718096]">Placa</p>
+                <p className="text-xs text-[#4A5568] font-medium">{vehiculo.placa}</p>
               </div>
             </div>
           </div>
         )}
 
-        <div className="neu-card-sm p-4 mb-5 bg-[#E36852]/5">
+        <div className="neu-card-sm p-3 mb-4 bg-[#E36852]/5">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <DollarIcon />

@@ -192,16 +192,21 @@ export default function ChoferDashboard() {
   const tieneRevision = (vehiculo) => {
     if (!vehiculo.revisiones || vehiculo.revisiones.length === 0) return 'sin_revision';
     const ultima = vehiculo.revisiones[vehiculo.revisiones.length - 1];
-    return ultima.calificacion >= 65 ? 'apto' : 'inactivo';
+    return ultima.calificacion >= 65 ? 'apto' : 'no_apto';
   };
   const ultimaPrueba = chofer?.pruebas?.[chofer.pruebas.length - 1];
-  const esApto = ultimaPrueba && ultimaPrueba.calificacion >= 73;
+  const tienePruebaApta = ultimaPrueba && ultimaPrueba.calificacion >= 73;
+  const tieneVehiculoApto = vehiculos.some(
+    (v) => v.activo && v.revisiones?.some((r) => r.calificacion >= 65)
+  );
+  const esApto = tienePruebaApta && tieneVehiculoApto;
 
   const statusBadge = (estado) => {
     const map = {
       COMPLETADO: 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20',
       PENDIENTE: 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20',
-      PAGADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
+      PAGADO: 'bg-[#38A169]/10 text-[#38A169] border-[#38A169]/20',
+      CANCELADO: 'bg-[#DE4B43]/10 text-[#DE4B43] border-[#DE4B43]/20',
     };
     return map[estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20';
   };
@@ -232,7 +237,11 @@ export default function ChoferDashboard() {
             </span>
             <span className={`text-xs px-2.5 py-1 rounded-full font-semibold border ${esApto ? 'bg-[#E36852]/10 text-[#E36852] border-[#E36852]/20' : 'bg-[#F3A85B]/10 text-[#F3A85B] border-[#F3A85B]/20'
               }`}>
-              {ultimaPrueba ? `Nota: ${ultimaPrueba.calificacion}` : 'Sin evaluación'}
+              {!tienePruebaApta
+                ? 'Prueba Psicológica Requerida (Mín. 73)'
+                : !tieneVehiculoApto
+                ? 'Vehículo Apto Requerido (Mín. 65)'
+                : `Nota: ${ultimaPrueba.calificacion}`}
             </span>
           </div>
         </div>

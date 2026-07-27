@@ -41,8 +41,6 @@ async function crear(req, res, next) {
       cliente_id: cliente.data.id,
       origen: req.body.origen,
       destino: req.body.destino,
-      distancia_km: req.body.distancia_km,
-      tarifa_km: req.body.tarifa_km,
     });
 
     if (result.error) {

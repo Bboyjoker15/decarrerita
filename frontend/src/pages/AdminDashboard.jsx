@@ -40,7 +40,10 @@ export default function AdminDashboard() {
         const choferesAptos = choferes.filter((c) => {
           const pruebas = c.pruebas || [];
           const ultima = pruebas[pruebas.length - 1];
-          return ultima && ultima.calificacion >= 73;
+          const pruebaApta = ultima && ultima.calificacion >= 73;
+          const vehiculos = c.vehiculos || [];
+          const vehiculoApto = vehiculos.some(v => v.activo && (v.revisiones || []).some(r => r.calificacion >= 65));
+          return pruebaApta && vehiculoApto;
         }).length;
 
         const viajesHoy = viajesRes.data.data || [];

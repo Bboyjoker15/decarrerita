@@ -139,12 +139,13 @@ model Cliente {
 }
 
 model Recarga {
-  id         Int      @id @default(autoincrement())
-  cliente_id Int
-  banco_id   Int
-  referencia String
-  monto      Float
-  fecha      DateTime @default(now())
+  id              Int       @id @default(autoincrement())
+  cliente_id      Int
+  banco_id        Int
+  referencia      String
+  monto           Float
+  fecha           DateTime  @default(now())
+  fecha_deposito  DateTime?
 
   cliente Cliente @relation(fields: [cliente_id], references: [id])
   banco   Banco   @relation(fields: [banco_id], references: [id])
@@ -159,8 +160,6 @@ model Traslado {
   vehiculo_id     Int
   origen          String
   destino         String
-  distancia_km    Float
-  tarifa_km       Float
   monto_total     Float
   ganancia_empresa Float
   ganancia_chofer  Float
