@@ -1,9 +1,3 @@
-.
-
-Universidad Nacional Experimental de Guayana
-Carrera Ingeniería en Informática
-Sistemas de Base de Datos I
-Prof. María Raquel Herrera E.
 
 Proyecto Final (15%)
 Decarrerita, es una empresa local que necesita un sistema en línea para sus
@@ -66,23 +60,3 @@ base que el sistema requiera, como por ejemplo bancos.
 El personal administrativo también puede ver lo recaudado por la empresa por
 concepto de ganancias dado un periodo de tiempo, y lo cancelado a un chofer en
 especifico dado un periodo de tiempo
-
-Se debe entregar un informe que contenga:
-a.- Planteamiento del problema (se debe especificar aquellos aspectos que incluyeron
-en el sistema que no están presentes en este planteamiento, y que son un agregado
-del grupo para el proyecto).
-b.- Carta estructurada del sistema
-c.- Indicar las herramientas de desarrollo usadas (DBMS, lenguaje, frameworks etc)
-d.- Modelo E-R
-e.- Modelo Relacional en el DBMS de su preferencia
-f.- Diccionario de datos (por cada tabla se debe mostrar nombre, la descripción,
-clave primaria, foráneas, descripción de cada campo y su tipo de datos)
-g.- Pantallas de los formularios y descripción de cada uno de ellos
-h.- Pantallas de la salida de las consultas asi como su script
-Observaciones:
-- Asignación a ser elaborado en equipos de 5 personas máximo
-- Se penalizará anulando aquellas asignaciones que sean copias de otras.
-- Se tomará en cuenta la presentación y diseño de la interfaz
-- Usar el DBMS de su preferencia, asi como las herramientas de desarrollo
-
-
