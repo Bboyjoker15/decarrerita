@@ -90,6 +90,17 @@ export default function ChoferDashboard() {
     }
   }, []);
 
+  const handleConfirmarViaje = async (id) => {
+    try {
+      await api.put(`/traslados/${id}/estado`, { estado: 'COMPLETADO' });
+      fetchTraslados(trasladosPage, filtroEstado);
+      fetchChofer();
+    } catch (err) {
+      const text = err.response?.data?.error || 'Error al confirmar viaje';
+      alert(Array.isArray(text) ? text.join(', ') : text);
+    }
+  };
+
   useEffect(() => {
     fetchChofer();
     fetchBancos();
@@ -526,16 +537,17 @@ export default function ChoferDashboard() {
                 <th className="text-right p-4 font-semibold">Monto Total</th>
                 <th className="text-right p-4 font-semibold">Ganancia (70%)</th>
                 <th className="text-center p-4 font-semibold">Estado</th>
+                <th className="text-center p-4 font-semibold">Acción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E2E8F0]">
               {trasladosLoading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-[#718096]">Cargando...</td>
+                  <td colSpan={7} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : traslados.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-[#718096]">No hay viajes registrados</td>
+                  <td colSpan={7} className="p-8 text-center text-[#718096]">No hay viajes registrados</td>
                 </tr>
               ) : (
                 traslados.map((t) => (
@@ -549,6 +561,16 @@ export default function ChoferDashboard() {
                       <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-semibold border ${statusBadge(t.estado)}`}>
                         {t.estado === 'PAGADO' ? 'Cancelado' : t.estado}
                       </span>
+                    </td>
+                    <td className="p-4 text-center">
+                      {t.estado === 'PENDIENTE' && (
+                        <button
+                          onClick={() => handleConfirmarViaje(t.id)}
+                          className="bg-[#E36852] hover:bg-[#EA8559] text-white text-xs font-bold py-1.5 px-3 rounded-xl shadow-neu-sm transition-all duration-200 active:scale-[0.98]"
+                        >
+                          Confirmar Viaje
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))

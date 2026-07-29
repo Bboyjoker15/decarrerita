@@ -57,6 +57,16 @@ export default function HistorialTrasladosView() {
     setPage(1);
   };
 
+  const handleConfirmarViaje = async (id) => {
+    try {
+      await api.put(`/traslados/${id}/estado`, { estado: 'COMPLETADO' });
+      fetchTraslados(page);
+    } catch (err) {
+      const text = err.response?.data?.error || 'Error al confirmar viaje';
+      alert(Array.isArray(text) ? text.join(', ') : text);
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';
     return new Date(dateStr).toLocaleDateString('es-ES', {
@@ -146,16 +156,19 @@ export default function HistorialTrasladosView() {
                 <th className="text-left p-4 font-semibold">Chofer</th>
                 <th className="text-center p-4 font-semibold">Estado</th>
                 <th className="text-right p-4 font-semibold">Monto</th>
+                {user.rol === 'CHOFER' && (
+                  <th className="text-center p-4 font-semibold">Acción</th>
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E2E8F0]">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#718096]">Cargando...</td>
+                  <td colSpan={user.rol === 'CHOFER' ? 8 : 7} className="p-8 text-center text-[#718096]">Cargando...</td>
                 </tr>
               ) : traslados.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#718096]">No hay traslados registrados</td>
+                  <td colSpan={user.rol === 'CHOFER' ? 8 : 7} className="p-8 text-center text-[#718096]">No hay traslados registrados</td>
                 </tr>
               ) : (
                 traslados.map((t) => (
@@ -177,6 +190,18 @@ export default function HistorialTrasladosView() {
                       </span>
                     </td>
                     <td className="p-4 text-[#E36852] font-semibold text-right">${t.monto_total?.toFixed(2)}</td>
+                    {user.rol === 'CHOFER' && (
+                      <td className="p-4 text-center">
+                        {t.estado === 'PENDIENTE' && (
+                          <button
+                            onClick={() => handleConfirmarViaje(t.id)}
+                            className="bg-[#E36852] hover:bg-[#EA8559] text-white text-xs font-bold py-1.5 px-3 rounded-xl shadow-neu-sm transition-all duration-200 active:scale-[0.98]"
+                          >
+                            Confirmar Viaje
+                          </button>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 ))
               )}

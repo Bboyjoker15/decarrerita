@@ -1,14 +1,3 @@
-function VehicleIcon() {
-  return (
-    <svg className="w-6 h-6 text-[#E36852]" viewBox="0 0 52 40" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 16L6 34L46 34L46 16" />
-      <path d="M8 16L8 10L30 10L36 16" />
-      <circle cx="16" cy="30" r="3" fill="#E36852" stroke="none" />
-      <circle cx="36" cy="30" r="3" fill="#E36852" stroke="none" />
-    </svg>
-  );
-}
-
 function PhoneIcon() {
   return (
     <svg className="w-5 h-5 text-[#F3A85B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,7 +39,6 @@ export default function ViajeModal({ traslado, onClose }) {
       <div className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 animate-in shadow-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <VehicleIcon />
             <h2 className="text-xl font-bold text-[#4A5568]">Viaje Asignado</h2>
           </div>
           <span className={`inline-block text-xs px-3 py-1 rounded-full font-semibold border ${statusColorMap[traslado.estado] || 'bg-[#718096]/10 text-[#718096] border-[#718096]/20'}`}>
